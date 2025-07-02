@@ -16,27 +16,27 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram miPhone"
-            className="text-gray-700 hover:text-[#ff8000] transition-colors"
+            className="text-gray-700 hover:text-orange-500 transition-colors"
           >
-            <Instagram className="w-7 h-7 inline" />
+            <Instagram className="w-6 h-6 inline" />
           </Link>
           <Link
             href="https://www.facebook.com/miphone.argentina/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook miPhone"
-            className="text-gray-700 hover:text-[#ff8000] transition-colors"
+            className="text-gray-700 hover:text-orange-500 transition-colors"
           >
-            <Facebook className="w-7 h-7 inline" />
+            <Facebook className="w-6 h-6 inline" />
           </Link>
           <Link
             href="https://t.me/miphone_ar/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Telegram miPhone"
-            className="text-gray-700 hover:text-[#ff8000] transition-colors"
+            className="text-gray-700 hover:text-orange-500 transition-colors"
           >
-            <Send className="w-7 h-7 inline" />
+            <Send className="w-6 h-6 inline" />
           </Link>
         </div>
       </div>

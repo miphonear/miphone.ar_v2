@@ -2,7 +2,7 @@
 import React from "react";
 
 interface BadgeProps {
-  emoji: string; // Emoji al inicio
+  emoji: string;
   children: React.ReactNode;
   className?: string;
 }
@@ -10,9 +10,14 @@ interface BadgeProps {
 export function Badge({ emoji, children, className = "" }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-gray-800 gap-1 ${className}`}
+      className={`
+        inline-flex items-center rounded-full bg-orange-100
+        px-2 py-1 text-[11px] font-medium text-gray-800 gap-1
+        sm:px-3 sm:py-1 sm:text-xs
+        ${className}
+      `}
     >
-      <span className="text-base mr-1">{emoji}</span>
+      <span className="text-sm mr-1 sm:text-base">{emoji}</span>
       <span>{children}</span>
     </span>
   );

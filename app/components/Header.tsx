@@ -10,16 +10,11 @@ export default function Header() {
 
         {/* Slogan */}
         <div className="w-full flex justify-center mb-4">
-          <h2 className="text-2xl md:text-5xl font-extrabold text-center leading-tight">
-            ¡Comprá{" "}
+          <h2 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
+            Lo bueno se{" "}
             <span className="bg-gradient-to-r from-[#FF6D0C] to-[#C051FF] text-transparent bg-clip-text">
-              fácil
+              recomienda.
             </span>
-            , comprá{" "}
-            <span className="bg-gradient-to-r from-[#C051FF] to-[#FF6D0C] text-transparent bg-clip-text">
-              seguro
-            </span>
-            !{" "}
           </h2>
         </div>
 

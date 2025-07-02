@@ -1,44 +1,12 @@
-import {
-  Apple,
-  Ear,
-  Watch,
-  Tag,
-  Tablet,
-  Laptop,
-  Gamepad2,
-  Xbox,
-  Bot,
-  Recycle,
-  Camera,
-  CameraIcon,
-  Clock,
-  Headphones,
-  ShoppingBag,
-  Headset,
-  Sparkles,
-  BadgeHelp,
-  Palette,
-  // Puedes sumar más Lucide icons si querés otras categorías
-} from "lucide-react";
-
-export const ICONOS_CATEGORIAS: Record<string, React.ComponentType<any>> = {
-  IPHONE: Apple,
-  AIRPODS: Ear,
-  "APPLE WATCH": Watch,
-  AIRTAG: Tag,
-  IPAD: Tablet,
-  "MACBOOK AIR": Laptop,
-  "MACBOOK PRO": Laptop,
-  PLAYSTATION: Gamepad2,
-  XBOX: Xbox,
-  "NINTENDO SWITCH": Gamepad2,
-  VR: Headset,
-  GOPRO: Camera,
-  INSTA360: CameraIcon,
-  SMARTWATCH: Clock,
-  ACCESORIOS: ShoppingBag,
-  "DRONE DJI": Bot,
-  "IPHONE SEMINUEVOS": Recycle,
-  // fallback
-  DEFAULT: BadgeHelp,
+// lib/constantes.ts
+export const ALERTAS: Record<string, string> = {
+  "MACBOOK AIR":
+    "Consultanos por versiones custom (Chip MAX, +RAM, etc). También traemos iMac, Mac mini, Mac Studio",
+  "MACBOOK PRO":
+    "Consultanos por versiones custom (Chip MAX, +RAM, etc). También traemos iMac, Mac mini, Mac Studio",
+  IPHONE: "¡Con la compra de un iPhone + U$30, llevate un cargador 20W Apple ORIGINAL!",
+  SAMSUNG: "Por otros productos de la marca (Linea Z, Samsung Tab, etc) consultanos por WhatsApp",
+  ACCESORIOS: "Consultar disponibilidad en modelos y colores",
+  "IPHONE SEMINUEVOS":
+    "Todos los equipos fueron testeados y nunca reparados (piezas originales).<br>Garantía escrita de 30 días por fallas.",
 };

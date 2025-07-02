@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import SwitchDarkMode from "@/components/SwitchDarkMode";
 import Dialog from "./Dialog";
 import GarantiasContent from "./GarantiasContent";
 import PagosContent from "./PagosContent";
@@ -28,15 +27,14 @@ export default function Nav() {
           <Image
             src="/images/logo-miphone-1.svg"
             alt="Logo miPhone"
-            width={150}
-            height={60}
+            width={320}
+            height={120}
             className="
-              max-w-[120px] sm:max-w-[200px] md:max-w-[240px]
-              w-full h-auto
-              transition-transform duration-200 ease-in-out
-              group-hover:scale-110
-              mx-auto
-            "
+    w-[200px] sm:w-[260px] md:w-[300px] lg:w-[320px]
+    h-auto
+    mx-auto
+    transition-transform duration-200 group-hover:scale-105
+  "
             priority
             draggable={false}
           />

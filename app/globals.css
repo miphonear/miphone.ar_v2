@@ -71,14 +71,26 @@ html {
     @apply border-border;
   }
 
+body {
+  background: #fff;
+  background-image:
+    radial-gradient(circle 400px at 75vw 100px, rgba(255, 109, 12, 0.13) 0%, transparent 80%),
+    radial-gradient(circle 800px at 90vw 80vh, rgba(192, 81, 255, 0.10) 0%, transparent 80%),
+    radial-gradient(circle 500px at 15vw 70vh, rgba(255, 109, 12, 0.08) 0%, transparent 90%);
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
+/* Mobile: círculos un poco más chicos y distanciados */
+@media (max-width: 600px) {
   body {
-  min-height: 100vh;
-  @apply text-foreground;
-  background: white;
+    background-image:
+      radial-gradient(circle 180px at 85vw 40px, rgba(255, 109, 12, 0.16) 0%, transparent 90%),
+      radial-gradient(circle 150px at 95vw 85vh, rgba(192, 81, 255, 0.11) 0%, transparent 100%),
+      radial-gradient(circle 120px at 20vw 80vh, rgba(255, 109, 12, 0.10) 0%, transparent 100%);
+  }
 }
-
 }
-
 
 /* Oculta scroll horizontal */
 .no-scrollbar {
