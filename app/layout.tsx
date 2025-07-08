@@ -2,6 +2,42 @@
 import './globals.css'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+
+export const metadata = {
+  title: 'miPhone™',
+  description:
+    'Descubrí los mejores precios en productos tecnológicos. iPhone, Apple, Samsung, Xiaomi, Consolas, Gaming, Fotografía y más. ¡A un clic de distancia!',
+  keywords: [
+    'precios celulares Argentina',
+    'comprar iPhone',
+    'MacBook',
+    'Samsung',
+    'Xiaomi',
+    'consolas',
+    'gaming',
+    'fotografía',
+    'ofertas online',
+  ],
+  authors: [{ name: 'miPhone', url: 'https://miphone.ar' }],
+  openGraph: {
+    title: 'miPhone™',
+    description: 'Los mejores precios en tecnología: Apple, Samsung, Xiaomi, consolas y más.',
+    url: 'https://miphone.ar',
+    type: 'website',
+    images: [
+      {
+        url: 'https://miphone.ar/public/images/preview.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'miPhone™',
+      },
+    ],
+    siteName: 'miPhone™',
+    locale: 'es_AR',
+  },
+  metadataBase: new URL('https://miphone.ar'),
+}
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700', '900'] })
 
@@ -25,7 +61,9 @@ export default function RootLayout({ children }) {
           `}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        {children} <SpeedInsights />
+      </body>
     </html>
   )
 }
