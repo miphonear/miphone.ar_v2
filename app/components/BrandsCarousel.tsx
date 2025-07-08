@@ -1,56 +1,55 @@
-// app/components/BrandsCarousel.tsx
-"use client";
-import { useRef } from "react";
-import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+'use client'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import { useRef } from 'react'
 
 const marcas = [
-  { name: "Apple", src: "/images/brands/apple-logo.webp", tag: "iPhone" },
-  { name: "Xiaomi", src: "/images/brands/xiaomi-logo.webp", tag: "Xiaomi" },
-  { name: "Samsung", src: "/images/brands/galaxy-logo.webp", tag: "Samsung" },
-  { name: "Pixel", src: "/images/brands/pixel-logo.webp", tag: "Pixel" },
-  { name: "Realme", src: "/images/brands/realme-logo.webp", tag: "Realme" },
-  { name: "PlayStation", src: "/images/brands/playstation-logo.webp", tag: "PlayStation" },
-  { name: "Nintendo", src: "/images/brands/nintendo-logo.webp", tag: "Nintendo" },
-  { name: "Xbox", src: "/images/brands/xbox-logo.webp", tag: "Xbox" },
-  { name: "Meta", src: "/images/brands/meta-logo.webp", tag: "Meta" },
-  { name: "GoPro", src: "/images/brands/gopro-logo.webp", tag: "GoPro" },
-  { name: "Insta360", src: "/images/brands/insta360-logo.webp", tag: "Insta360" },
-  { name: "Canon", src: "/images/brands/canon-logo.webp", tag: "Canon" },
-  { name: "Nikon", src: "/images/brands/nikon-logo.webp", tag: "Nikon" },
-  { name: "Sony", src: "/images/brands/sony-logo.webp", tag: "Sony" },
-  { name: "Sigma", src: "/images/brands/sigma-logo.webp", tag: "Sigma" },
-];
+  { name: 'Apple', src: '/images/brands/apple-logo.webp', tag: 'iPhone' },
+  { name: 'Xiaomi', src: '/images/brands/xiaomi-logo.webp', tag: 'Xiaomi' },
+  { name: 'Samsung', src: '/images/brands/galaxy-logo.webp', tag: 'Samsung' },
+  { name: 'Pixel', src: '/images/brands/pixel-logo.webp', tag: 'Pixel' },
+  { name: 'Realme', src: '/images/brands/realme-logo.webp', tag: 'Realme' },
+  { name: 'PlayStation', src: '/images/brands/playstation-logo.webp', tag: 'PlayStation' },
+  { name: 'Nintendo', src: '/images/brands/nintendo-logo.webp', tag: 'Nintendo' },
+  { name: 'Xbox', src: '/images/brands/xbox-logo.webp', tag: 'Xbox' },
+  { name: 'Meta', src: '/images/brands/meta-logo.webp', tag: 'Meta' },
+  { name: 'GoPro', src: '/images/brands/gopro-logo.webp', tag: 'GoPro' },
+  { name: 'Insta360', src: '/images/brands/insta360-logo.webp', tag: 'Insta360' },
+  { name: 'Canon', src: '/images/brands/canon-logo.webp', tag: 'Canon' },
+  { name: 'Nikon', src: '/images/brands/nikon-logo.webp', tag: 'Nikon' },
+  { name: 'Sony', src: '/images/brands/sony-logo.webp', tag: 'Sony' },
+  { name: 'Sigma', src: '/images/brands/sigma-logo.webp', tag: 'Sigma' },
+]
 
 export default function BrandsCarousel({ onSearch }) {
-  const containerRef = useRef(null);
-  const scrollAmount = 240;
+  const containerRef = useRef(null)
+  const scrollAmount = 240
 
   const handleScroll = (direction) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
     containerRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
-      behavior: "smooth",
-    });
-  };
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    })
+  }
 
   return (
     <div className="bg-transparent">
       <div className="max-w-xl md:max-w-3xl mx-auto px-2 md:px-4 relative">
         {/* Botón izquierdo */}
         <button
-          onClick={() => handleScroll("left")}
+          onClick={() => handleScroll('left')}
           aria-label="Anterior"
           className="
             hidden md:block absolute left-0 -translate-x-full 
-            top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow
-            hover:transition group z-10
+            top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow 
+            hover:transition focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 group z-10 
           "
         >
           <ChevronLeft
             className="
               w-6 h-6 text-gray-600 transition-colors
-              group-hover:text-[#ff8000]
+              group-hover:text-orange-500
             "
           />
         </button>
@@ -66,12 +65,11 @@ export default function BrandsCarousel({ onSearch }) {
           {marcas.map((m) => (
             <button
               key={m.name}
-              type="button"
-              onClick={() => onSearch && onSearch(m.tag)}
+              onClick={() => onSearch(m.tag)}
               className="
                 flex-shrink-0 snap-center focus:outline-none bg-transparent
                 transition-transform duration-200 hover:scale-110
-                rounded-full
+                rounded-full 
                 group
               "
               title={`Buscar productos de ${m.tag}`}
@@ -96,22 +94,22 @@ export default function BrandsCarousel({ onSearch }) {
 
         {/* Botón derecho */}
         <button
-          onClick={() => handleScroll("right")}
+          onClick={() => handleScroll('right')}
           aria-label="Siguiente"
           className="
             hidden md:block absolute right-0 translate-x-full
             top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow
-            hover: transition group z-10
+            hover: transition group z-10 
           "
         >
           <ChevronRight
             className="
               w-6 h-6 text-gray-600 transition-colors
-              group-hover:text-[#ff8000]
+              group-hover:text-orange-500
             "
           />
         </button>
       </div>
     </div>
-  );
+  )
 }

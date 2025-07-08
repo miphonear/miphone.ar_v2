@@ -1,22 +1,19 @@
 // components/WhatsAppFloat.tsx
-"use client";
-import { useEffect, useState } from "react";
+'use client'
+import { useEffect, useState } from 'react'
 
 export default function WhatsAppFloat() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   return (
-    <div
-      className="fixed z-50 bottom-4 right-4 flex items-center group"
-      tabIndex={-1}
-    >
+    <div className="fixed z-50 bottom-4 right-4 flex items-center group" tabIndex={-1}>
       {/* Bubble desktop */}
       {!isMobile && (
         <span
@@ -31,7 +28,7 @@ export default function WhatsAppFloat() {
             hidden md:inline-flex
           `}
           style={{
-            boxShadow: "0 2px 24px 0 rgba(39, 174, 96, 0.12)",
+            boxShadow: '0 2px 24px 0 rgba(39, 174, 96, 0.12)',
           }}
         >
           ¡Chateá con nosotros!
@@ -65,5 +62,5 @@ export default function WhatsAppFloat() {
         </svg>
       </a>
     </div>
-  );
+  )
 }

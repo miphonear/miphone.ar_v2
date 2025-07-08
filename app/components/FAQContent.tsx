@@ -1,71 +1,127 @@
 // app/components/FAQContent.tsx
-"use client";
-import { useState } from "react";
+'use client'
+import { useState } from 'react'
 
 const items = [
   {
-    title: "🆚 Comparador de productos",
+    title: '🆚 Comparador de productos',
     links: [
-      { href: "https://www.gsmarena.com/compare.php3", text: "Comparador de smartphones" },
-      { href: "https://www.apple.com/es/iphone/compare/", text: "iPhone: comparador de modelos" },
-      { href: "https://www.apple.com/la/airpods/compare/", text: "AirPods: comparador de modelos" },
-      { href: "https://www.apple.com/la/watch/compare/", text: "Apple Watch: comparador de modelos" },
-      { href: "https://www.apple.com/la/ipad/compare/", text: "iPad: comparador de modelos" },
-      { href: "https://www.apple.com/la/mac/compare/", text: "MacBook: comparador de modelos" }
-    ]
+      { href: 'https://www.gsmarena.com/compare.php3', text: 'Comparador de smartphones' },
+      { href: 'https://www.apple.com/es/iphone/compare/', text: 'iPhone: comparador de modelos' },
+      { href: 'https://www.apple.com/la/airpods/compare/', text: 'AirPods: comparador de modelos' },
+      {
+        href: 'https://www.apple.com/la/watch/compare/',
+        text: 'Apple Watch: comparador de modelos',
+      },
+      { href: 'https://www.apple.com/la/ipad/compare/', text: 'iPad: comparador de modelos' },
+      { href: 'https://www.apple.com/la/mac/compare/', text: 'MacBook: comparador de modelos' },
+    ],
   },
   {
-    title: "🔁 Traspaso de información",
+    title: '🔁 Traspaso de información',
     links: [
-      { href: "https://support.apple.com/es-es/118670", text: "Pasar de Android a iPhone/iPad" },
-      { href: "https://www.youtube.com/shorts/5c1mjZ10Dtg", text: "Pasar datos WhatsApp de Android a iOS" },
-      { href: "https://www.android.com/intl/es_es/switch-to-android/", text: "Pasar de iPhone/iPad a Android" },
-      { href: "https://support.apple.com/es-lamr/119967/", text: "Transferir datos entre dispositivos Apple" }
-    ]
+      { href: 'https://support.apple.com/es-es/118670', text: 'Pasar de Android a iPhone/iPad' },
+      {
+        href: 'https://www.youtube.com/shorts/5c1mjZ10Dtg',
+        text: 'Pasar datos WhatsApp de Android a iOS',
+      },
+      {
+        href: 'https://www.android.com/intl/es_es/switch-to-android/',
+        text: 'Pasar de iPhone/iPad a Android',
+      },
+      {
+        href: 'https://support.apple.com/es-lamr/119967/',
+        text: 'Transferir datos entre dispositivos Apple',
+      },
+    ],
   },
   {
-    title: "ℹ️ Info útil",
+    title: 'ℹ️ Info útil',
     links: [
-      { href: "https://support.apple.com/es-lamr/120837", text: "¿Qué hago si me robaron el iPhone?" },
-      { href: "https://support.apple.com/es-lamr/118669", text: "¿Qué es eSIM en el iPhone?" },
-      { href: "https://support.apple.com/es-lamr/104989", text: "¿Cómo conectar los AirPods y AirPods Pro?" },
-      { href: "https://support.apple.com/es-lamr/108364", text: "¿Cómo conectar los AirPods Max?" },
-      { href: "https://support.apple.com/es-lamr/104956", text: "¿Cómo enlazar el Apple Watch con un iPhone nuevo?" },
-      { href: "https://www.apple.com/shop/Catalog/US/Images/bxxd/size-guide_CA.pdf", text: "¿Cómo conocer mi talle en Apple Watch?" },
-      { href: "https://www.mi.com/global/verify/#/en/tab/imei", text: "¿Cómo comprobar la autenticidad de un producto Xiaomi?" },
-      { href: "https://support.apple.com/es-lamr/102869", text: "¿Cómo identificar el modelo de tu MacBook Air?" },
-      { href: "https://support.apple.com/es-lamr/108052", text: "¿Cómo identificar el modelo de tu MacBook Pro?" },
-      { href: "https://support.apple.com/es-lamr/108043", text: "¿Cómo identificar el modelo de tu iPad?" },
-      { href: "https://support.apple.com/es-lamr/109509", text: "¿Cómo Identificar el adaptador de energía de la Mac?" },
-      { href: "https://support.apple.com/es-lamr/108937", text: "Compatibilidad de Apple Pencil" }
-    ]
+      {
+        href: 'https://support.apple.com/es-lamr/120837',
+        text: '¿Qué hago si me robaron el iPhone?',
+      },
+      { href: 'https://support.apple.com/es-lamr/118669', text: '¿Qué es eSIM en el iPhone?' },
+      {
+        href: 'https://support.apple.com/es-lamr/104989',
+        text: '¿Cómo conectar los AirPods y AirPods Pro?',
+      },
+      { href: 'https://support.apple.com/es-lamr/108364', text: '¿Cómo conectar los AirPods Max?' },
+      {
+        href: 'https://support.apple.com/es-lamr/104956',
+        text: '¿Cómo enlazar el Apple Watch con un iPhone nuevo?',
+      },
+      {
+        href: 'https://www.apple.com/shop/Catalog/US/Images/bxxd/size-guide_CA.pdf',
+        text: '¿Cómo conocer mi talle en Apple Watch?',
+      },
+      {
+        href: 'https://www.mi.com/global/verify/#/en/tab/imei',
+        text: '¿Cómo comprobar la autenticidad de un producto Xiaomi?',
+      },
+      {
+        href: 'https://support.apple.com/es-lamr/102869',
+        text: '¿Cómo identificar el modelo de tu MacBook Air?',
+      },
+      {
+        href: 'https://support.apple.com/es-lamr/108052',
+        text: '¿Cómo identificar el modelo de tu MacBook Pro?',
+      },
+      {
+        href: 'https://support.apple.com/es-lamr/108043',
+        text: '¿Cómo identificar el modelo de tu iPad?',
+      },
+      {
+        href: 'https://support.apple.com/es-lamr/109509',
+        text: '¿Cómo Identificar el adaptador de energía de la Mac?',
+      },
+      { href: 'https://support.apple.com/es-lamr/108937', text: 'Compatibilidad de Apple Pencil' },
+    ],
   },
   {
-    title: "📷 Fotografía",
+    title: '📷 Fotografía',
     links: [
-      { href: "https://www.dpreview.com/products/cameras/", text: "DPReview.com: Camera feature search" },
-      { href: "https://www.rtings.com/camera/tools/table", text: "RTINGS.com: Comparador de cámaras" },
-      { href: "https://www.dxomark.com/camera-sensors/reviews/", text: "DXOMARK.com: Camera sensor reviews" },
-      { href: "https://www.dxomark.com/camera-lenses/reviews/", text: "DXOMARK.com: Camera lens reviews" },
-      { href: "https://www.decamaras.com/CMS/component/option,com_objetivos/Itemid,291/func,siglas/", text: "Objetivos y Lentes - siglas de todas las marcas" }
-    ]
-  }
-];
+      {
+        href: 'https://www.dpreview.com/products/cameras/',
+        text: 'DPReview.com: Camera feature search',
+      },
+      {
+        href: 'https://www.rtings.com/camera/tools/table',
+        text: 'RTINGS.com: Comparador de cámaras',
+      },
+      {
+        href: 'https://www.dxomark.com/camera-sensors/reviews/',
+        text: 'DXOMARK.com: Camera sensor reviews',
+      },
+      {
+        href: 'https://www.dxomark.com/camera-lenses/reviews/',
+        text: 'DXOMARK.com: Camera lens reviews',
+      },
+      {
+        href: 'https://www.decamaras.com/CMS/component/option,com_objetivos/Itemid,291/func,siglas/',
+        text: 'Objetivos y Lentes - siglas de todas las marcas',
+      },
+    ],
+  },
+]
 
 export default function FAQContent() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(null)
 
   return (
     <div>
       {items.map((item, i) => (
         <div key={i} className="border-b last:border-b-0">
           <button
-            className={`flex w-full items-center justify-between py-3 text-left font-semibold text-gray-800 transition-colors hover:text-orange-600 focus:outline-none ${open === i ? "text-orange-600" : ""}`}
+            className={`flex w-full items-center justify-between py-3 text-left font-semibold text-gray-800 transition-colors hover:text-orange-600 focus:outline-none ${
+              open === i ? 'text-orange-600' : ''
+            }`}
             onClick={() => setOpen(open === i ? null : i)}
             aria-expanded={open === i}
           >
             <span>{item.title}</span>
-            <span className="text-lg">{open === i ? "−" : "+"}</span>
+            <span className="text-lg">{open === i ? '−' : '+'}</span>
           </button>
           {open === i && (
             <div className="pb-2 pl-2">
@@ -85,5 +141,5 @@ export default function FAQContent() {
         </div>
       ))}
     </div>
-  );
+  )
 }

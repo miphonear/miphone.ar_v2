@@ -1,14 +1,14 @@
 // app/components/Dialog.tsx
-"use client";
-import { Fragment, ReactNode } from "react";
-import { Dialog as HDialog, Transition } from "@headlessui/react";
-import { X } from "lucide-react";
+'use client'
+import { Dialog as HDialog, Transition } from '@headlessui/react'
+import { X } from 'lucide-react'
+import { Fragment, ReactNode } from 'react'
 
 interface Props {
-  open: boolean;
-  onClose: () => void;
-  title?: string;
-  children: ReactNode;
+  open: boolean
+  onClose: () => void
+  title?: string
+  children: ReactNode
 }
 
 export default function Dialog({ open, onClose, title, children }: Props) {
@@ -43,7 +43,7 @@ export default function Dialog({ open, onClose, title, children }: Props) {
               {/* Botón Cerrar */}
               <button
                 type="button"
-                className="absolute right-4 top-4 text-gray-400 hover:text-gray-700 transition"
+                className="absolute right-4 top-4 text-gray-400 hover:text-orange-500 transition"
                 onClick={onClose}
                 aria-label="Cerrar modal"
               >
@@ -61,5 +61,5 @@ export default function Dialog({ open, onClose, title, children }: Props) {
         </div>
       </HDialog>
     </Transition.Root>
-  );
+  )
 }

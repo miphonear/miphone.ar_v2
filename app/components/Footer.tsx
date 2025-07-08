@@ -1,6 +1,5 @@
-// app/components/Footer.jsx
-import Link from "next/link";
-import { Instagram, Facebook, Send } from "lucide-react";
+import { Facebook, Instagram, Send } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Footer() {
   return (
@@ -41,6 +40,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
-
