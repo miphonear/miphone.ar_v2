@@ -52,13 +52,13 @@ export default function AnnouncementBar() {
   if (!visible) return null
 
   return (
-    <div className="w-full bg-gray-100 text-gray-500 text-xs md:text-sm font-semibold py-1 px-4 flex items-center justify-center select-none relative">
+    <div className="w-full bg-gray-100 text-gray-700 text-xs md:text-sm font-semibold py-1 px-4 flex items-center justify-center select-none relative">
       <span>
         {/* Anuncios */}
         Dólar hoy: <span className="font-bold">{cotizacion}</span>
       </span>
       <button
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-600 transition"
         onClick={() => setVisible(false)}
         aria-label="Cerrar anuncio"
         type="button"
