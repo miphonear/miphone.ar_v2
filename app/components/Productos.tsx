@@ -1,4 +1,3 @@
-// app/components/Productos.tsx
 import { ALERTAS } from '@/lib/constantes'
 import ProductosAccesorios from './ProductosAccesorios'
 import ProductosGenerico from './ProductosGenerico'

@@ -1,13 +1,12 @@
-// app/components/Nav.tsx
 'use client'
 import { CreditCard, HelpCircle, ScrollText } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import Dialog from './Dialog'
 import FAQContent from './FAQContent'
 import GarantiasContent from './GarantiasContent'
 import PagosContent from './PagosContent'
+import LogoMiPhone from '@/public/images/logo-miphone.svg'
 
 // Configuración de tabs
 const TABS = [
@@ -29,19 +28,15 @@ export default function Nav() {
       {/* Logo */}
       <div className="container mx-auto flex justify-center items-center mb-0">
         <Link href="/" className="block group" aria-label="Ir a inicio">
-          <Image
-            src="/images/logo-miphone-1.svg"
-            alt="Logo miPhone"
-            width={320}
-            height={120}
+          <LogoMiPhone
             className="
-    w-[200px] sm:w-[260px] md:w-[300px] lg:w-[320px]
-    h-auto
-    mx-auto
-    transition-transform duration-200 group-hover:scale-105
-  "
-            priority
+              w-[200px] sm:w-[260px] md:w-[300px] lg:w-[320px]
+              h-auto
+              mx-auto
+              transition-transform duration-200 group-hover:scale-105
+            "
             draggable={false}
+            aria-label="Logo miPhone"
           />
         </Link>
       </div>

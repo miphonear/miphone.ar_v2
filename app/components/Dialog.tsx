@@ -47,13 +47,16 @@ export default function Dialog({ open, onClose, title, children }: Props) {
                 onClick={onClose}
                 aria-label="Cerrar modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-8 h-8" />
               </button>
-              {/* Título (opcional) */}
+              {/* Título */}
               {title && (
-                <HDialog.Title as="h3" className="text-lg font-semibold mb-4 text-gray-800">
-                  {title}
-                </HDialog.Title>
+                <>
+                  <HDialog.Title as="h3" className="text-lg font-semibold mb-2 text-gray-800">
+                    {title}
+                  </HDialog.Title>
+                  <hr className="border-b-1 border-gray-300 mb-4" />
+                </>
               )}
               {children}
             </HDialog.Panel>

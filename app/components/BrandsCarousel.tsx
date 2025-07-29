@@ -1,41 +1,101 @@
 'use client'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
+
+// Importá los SVG como componentes
+import AppleLogo from '@/public/images/brands/apple-logo.svg'
+import CanonLogo from '@/public/images/brands/canon-logo.svg'
+import DjiLogo from '@/public/images/brands/dji-logo.svg'
+import GalaxyLogo from '@/public/images/brands/galaxy-logo.svg'
+import GoproLogo from '@/public/images/brands/gopro-logo.svg'
+import Insta360Logo from '@/public/images/brands/Insta360-logo.svg'
+import MetaLogo from '@/public/images/brands/meta-logo.svg'
+import NikonLogo from '@/public/images/brands/nikon-logo.svg'
+import NintendoLogo from '@/public/images/brands/nintendo-logo.svg'
+import PixelLogo from '@/public/images/brands/pixel-logo.svg'
+import PlaystationLogo from '@/public/images/brands/playstation-logo.svg'
+import RealmeLogo from '@/public/images/brands/realme-logo.svg'
+import SigmaLogo from '@/public/images/brands/sigma-logo.svg'
+import SonyLogo from '@/public/images/brands/sony-logo.svg'
+import XboxLogo from '@/public/images/brands/xbox-logo.svg'
+import XiaomiLogo from '@/public/images/brands/xiaomi-logo.svg'
+
+interface BrandsCarouselProps {
+  onSearch: (_: string) => void
+}
 
 const marcas = [
-  { name: 'Apple', src: '/images/brands/apple-logo.webp', tag: 'iPhone' },
-  { name: 'Xiaomi', src: '/images/brands/xiaomi-logo.webp', tag: 'Xiaomi' },
-  { name: 'Samsung', src: '/images/brands/galaxy-logo.webp', tag: 'Samsung' },
-  { name: 'Pixel', src: '/images/brands/pixel-logo.webp', tag: 'Pixel' },
-  { name: 'Realme', src: '/images/brands/realme-logo.webp', tag: 'Realme' },
-  { name: 'PlayStation', src: '/images/brands/playstation-logo.webp', tag: 'PlayStation' },
-  { name: 'Nintendo', src: '/images/brands/nintendo-logo.webp', tag: 'Nintendo' },
-  { name: 'Xbox', src: '/images/brands/xbox-logo.webp', tag: 'Xbox' },
-  { name: 'Meta', src: '/images/brands/meta-logo.webp', tag: 'Meta' },
-  { name: 'GoPro', src: '/images/brands/gopro-logo.webp', tag: 'GoPro' },
-  { name: 'Insta360', src: '/images/brands/insta360-logo.webp', tag: 'Insta360' },
-  { name: 'Canon', src: '/images/brands/canon-logo.webp', tag: 'Canon' },
-  { name: 'Nikon', src: '/images/brands/nikon-logo.webp', tag: 'Nikon' },
-  { name: 'Sony', src: '/images/brands/sony-logo.webp', tag: 'Sony' },
-  { name: 'Sigma', src: '/images/brands/sigma-logo.webp', tag: 'Sigma' },
+  { name: 'Apple', Logo: AppleLogo, tag: 'iPhone' },
+  { name: 'Xiaomi', Logo: XiaomiLogo, tag: 'Xiaomi' },
+  { name: 'Samsung', Logo: GalaxyLogo, tag: 'Samsung' },
+  { name: 'Pixel', Logo: PixelLogo, tag: 'Pixel' },
+  { name: 'Realme', Logo: RealmeLogo, tag: 'Realme' },
+  { name: 'PlayStation', Logo: PlaystationLogo, tag: 'PlayStation' },
+  { name: 'Nintendo', Logo: NintendoLogo, tag: 'Nintendo' },
+  { name: 'Xbox', Logo: XboxLogo, tag: 'Xbox' },
+  { name: 'Meta', Logo: MetaLogo, tag: 'Meta' },
+  { name: 'GoPro', Logo: GoproLogo, tag: 'GoPro' },
+  { name: 'Insta360', Logo: Insta360Logo, tag: 'Insta360' },
+  { name: 'Canon', Logo: CanonLogo, tag: 'Canon' },
+  { name: 'Nikon', Logo: NikonLogo, tag: 'Nikon' },
+  { name: 'Sony', Logo: SonyLogo, tag: 'Sony' },
+  { name: 'Sigma', Logo: SigmaLogo, tag: 'Sigma' },
+  { name: 'DJI', Logo: DjiLogo, tag: 'Dji' },
 ]
 
-export default function BrandsCarousel({ onSearch }) {
-  const containerRef = useRef(null)
+export default function BrandsCarousel({ onSearch }: BrandsCarouselProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
   const scrollAmount = 240
 
-  const handleScroll = (direction) => {
+  // Duplicá los logos para el loop
+  const marcasLoop = [...marcas, ...marcas]
+
+  // Al montar, scrollea al inicio de la segunda tanda (para permitir loop en ambos sentidos)
+  useEffect(() => {
+    if (containerRef.current) {
+      const el = containerRef.current
+      const halfScroll = (el.scrollWidth - el.clientWidth) / 2
+      el.scrollLeft = halfScroll
+    }
+  }, [])
+
+  const handleScroll = (direction: 'left' | 'right') => {
     if (!containerRef.current) return
-    containerRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    })
+    const el = containerRef.current
+    const maxScroll = el.scrollWidth - el.clientWidth
+    const halfScroll = maxScroll / 2
+
+    if (direction === 'right') {
+      el.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+      setTimeout(() => {
+        if (el.scrollLeft >= maxScroll - scrollAmount) {
+          el.scrollLeft = halfScroll
+        }
+      }, 350)
+    } else {
+      el.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
+      setTimeout(() => {
+        if (el.scrollLeft <= scrollAmount) {
+          el.scrollLeft = halfScroll
+        }
+      }, 350)
+    }
   }
 
   return (
     <div className="bg-transparent">
-      <div className="max-w-xl md:max-w-3xl mx-auto px-2 md:px-4 relative">
+      <div className="max-w-xl md:max-w-5xl mx-auto px-2 md:px-4 relative">
+        {/* Gradiente izquierdo */}
+        <div
+          className="pointer-events-none absolute left-0 top-0 h-full w-16 z-20
+          bg-gradient-to-r from-white/100 via-white/80 to-white/0"
+        />
+        {/* Gradiente derecho */}
+        <div
+          className="pointer-events-none absolute right-0 top-0 h-full w-16 z-20
+          bg-gradient-to-l from-white/100 via-white/80 to-white/0"
+        />
+
         {/* Botón izquierdo */}
         <button
           onClick={() => handleScroll('left')}
@@ -43,7 +103,7 @@ export default function BrandsCarousel({ onSearch }) {
           className="
             hidden md:block absolute left-0 -translate-x-full 
             top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow 
-            hover:transition focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 group z-10 
+            hover:transition focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 group z-30 
           "
         >
           <ChevronLeft
@@ -58,36 +118,25 @@ export default function BrandsCarousel({ onSearch }) {
         <div
           ref={containerRef}
           className="
-            flex gap-4 md:gap-12 overflow-x-auto 
+            flex gap-6 md:gap-10 overflow-x-auto 
             px-1 md:px-2 no-scrollbar snap-x snap-mandatory scroll-smooth
           "
         >
-          {marcas.map((m) => (
+          {marcasLoop.map((m, i) => (
             <button
-              key={m.name}
+              key={m.name + '-' + i}
               onClick={() => onSearch(m.tag)}
-              className="
-                flex-shrink-0 snap-center focus:outline-none bg-transparent
-                transition-transform duration-200 hover:scale-110
-                rounded-full 
-                group
-              "
+              className="flex-shrink-0 snap-center focus:outline-none bg-transparent transition-transform duration-200 hover:scale-110 rounded-full group"
               title={`Buscar productos de ${m.tag}`}
               tabIndex={0}
             >
-              <Image
-                src={m.src}
-                alt={m.name}
-                width={200}
-                height={55}
-                loading="lazy"
-                className="
-                  h-[55px] w-auto
-                  filter grayscale opacity-60
-                  transition duration-200
-                  group-hover:filter-none group-hover:opacity-100
-                "
-              />
+              <div className="w-[70px] h-[35px] sm:w-[90px] sm:h-[45px] md:w-[120px] md:h-[60px] flex items-center justify-center p-1 sm:p-2">
+                <m.Logo
+                  className="max-h-full max-w-full filter grayscale opacity-60 transition duration-200 group-hover:filter-none group-hover:opacity-100"
+                  aria-label={m.name}
+                  draggable={false}
+                />
+              </div>
             </button>
           ))}
         </div>
@@ -99,7 +148,7 @@ export default function BrandsCarousel({ onSearch }) {
           className="
             hidden md:block absolute right-0 translate-x-full
             top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow
-            hover: transition group z-10 
+            hover: transition group z-30 
           "
         >
           <ChevronRight

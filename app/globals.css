@@ -14,3 +14,25 @@
   display: none;
   /* Chrome, Safari y Opera */
 }
+
+@keyframes bounce-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10%);
+  }
+  80% {
+    transform: translateY(5%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.bounce-up-once {
+  animation: bounce-up 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  display: inline-block;
+}

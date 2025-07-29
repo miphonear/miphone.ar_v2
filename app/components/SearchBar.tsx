@@ -18,7 +18,7 @@ export default function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className="relative max-w-lg mx-auto mb-8">
+    <div className="relative max-w-lg mx-auto">
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
         <Search className="w-5 h-5" />
       </span>

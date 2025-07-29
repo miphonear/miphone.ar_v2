@@ -1,25 +1,15 @@
-// app/components/Contenido.tsx
 'use client'
 import { useMemo } from 'react'
 import { useCategorias } from '../hooks/useCategorias'
 import { useDebounce } from '../hooks/useDebounce'
 import Productos from './Productos'
 import SearchBar from './SearchBar'
+import { Percent, Sparkles } from 'lucide-react'
+import { filtrarCategorias } from '@/lib/filtrarCategorias'
 
 interface ContenidoProps {
   query: string
   setQuery: (value: string) => void
-}
-
-// Función para limpiar texto (quita tildes, símbolos, etc.)
-function clean(str: string) {
-  return str
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // saca tildes
-    .replace(/[^a-z0-9]+/gi, ' ') // deja solo letras/números
-    .replace(/\s+/g, ' ') // espacios normales
-    .trim()
 }
 
 export default function Contenido({ query, setQuery }: ContenidoProps) {
@@ -28,62 +18,17 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
   )
   const debouncedQuery = useDebounce(query, 300)
 
-  // --- Filtrado ---
-  const categoriasFiltradas = useMemo(() => {
-    if (!debouncedQuery.trim()) return categorias
+  // Filtrado separado
+  const categoriasFiltradas = useMemo(
+    () => filtrarCategorias(categorias, debouncedQuery),
+    [categorias, debouncedQuery],
+  )
 
-    const words = clean(debouncedQuery).split(' ').filter(Boolean)
-    const ignoreCols = ['precio', 'l', 'ver ficha', 'consultar', 'fotos', 'ocultar']
-
-    return categorias
-      .map((cat) => {
-        // Indices de columnas donde buscar
-        const idxToSearch = cat.headers
-          .map((h, i) => (ignoreCols.some((col) => h.toLowerCase().includes(col)) ? null : i))
-          .filter((i) => i !== null) as number[]
-
-        // Agrupación por modelo
-        const agrupados: Record<string, string[][]> = {}
-        cat.productos.forEach((row) => {
-          const modelo = row[0]?.trim() || '-'
-          agrupados[modelo] = agrupados[modelo] || []
-          agrupados[modelo].push(row)
-        })
-
-        // Filtrado
-        const modelosFiltrados = Object.entries(agrupados)
-          .map(([modelo, variantes]) => {
-            const variantesFiltradas = variantes.filter((row) => {
-              // Buscar columna "L" (si existe)
-              const indexL = cat.headers.findIndex((h) => h.toLowerCase() === 'l')
-              const texto = [
-                clean(cat.nombre),
-                clean(modelo),
-                ...idxToSearch.map((i) => clean(row[i] || '')),
-                indexL !== -1 ? clean(row[indexL] || '') : '',
-              ].join(' ')
-
-              // Búsqueda más tolerante (word está en texto)
-              return words.every((word) => texto.includes(word))
-            })
-
-            if (variantesFiltradas.length > 0) {
-              return [modelo, variantesFiltradas] as [string, string[][]]
-            }
-            return null
-          })
-          .filter(Boolean) as [string, string[][]][]
-
-        if (modelosFiltrados.length > 0) {
-          const productosFiltrados = modelosFiltrados.flatMap(([, variantes]) => variantes)
-          return { ...cat, productos: productosFiltrados }
-        }
-        return null
-      })
-      .filter(Boolean) as (typeof categorias)[0][]
-  }, [categorias, debouncedQuery])
-
-  const openCategorias = debouncedQuery.trim() ? categoriasFiltradas.map((cat) => cat.nombre) : []
+  // Lógica abrir acordeones
+  const openCategorias = useMemo(() => {
+    if (!debouncedQuery.trim()) return []
+    return categoriasFiltradas.map((cat) => cat.nombre)
+  }, [categoriasFiltradas, debouncedQuery])
 
   if (loading)
     return (
@@ -97,13 +42,34 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
     )
 
   return (
-    <div className="max-w-3xl mx-auto px-2 sm:px-4 space-y-3">
-      <SearchBar
-        value={query}
-        onChange={setQuery}
-        onClear={() => setQuery('')}
-        placeholder="Buscar productos"
-      />
+    <div className="max-w-3xl mx-auto px-2 sm:px-4">
+      <div className="mb-4">
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          onClear={() => setQuery('')}
+          placeholder="Buscar productos"
+        />
+      </div>
+      <div className="flex justify-center gap-2 w-full mb-6">
+        <button
+          type="button"
+          className="inline-flex items-center gap-0.5 px-2 py-1 rounded-full bg-red-100 text-red-700 font-bold text-xs ring-1 ring-red-300 hover:bg-red-200 active:scale-95 transition-all duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-red/40 transition"
+          onClick={() => setQuery('SALE')}
+        >
+          <Percent className="w-3 h-3" />
+          <span>OFERTAS</span>
+        </button>
+        <button
+          type="button"
+          className="inline-flex items-center gap-0.5 px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-xs ring-1 ring-blue-300 hover:bg-blue-200 active:scale-95 transition-all duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue/40 transition"
+          onClick={() => setQuery('NEW')}
+        >
+          <Sparkles className="w-3 h-3" />
+          <span>NUEVOS</span>
+        </button>
+      </div>
+      {/* Resultados */}
       {categoriasFiltradas.length === 0 && (
         <div className="text-center text-gray-500 py-12">
           No se encontraron productos.
@@ -111,15 +77,18 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
           Consultar existencia por WhatsApp
         </div>
       )}
-      {categoriasFiltradas.map((cat) => (
-        <Productos
-          key={cat.nombre}
-          nombre={cat.nombre}
-          headers={cat.headers}
-          productos={cat.productos}
-          open={openCategorias.includes(cat.nombre)}
-        />
-      ))}
+      {/* Acordeones */}
+      <div className="space-y-3">
+        {categoriasFiltradas.map((cat) => (
+          <Productos
+            key={cat.nombre}
+            nombre={cat.nombre}
+            headers={cat.headers}
+            productos={cat.productos}
+            open={openCategorias.includes(cat.nombre)}
+          />
+        ))}
+      </div>
     </div>
   )
 }
