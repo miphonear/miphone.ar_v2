@@ -18,14 +18,17 @@
 @keyframes bounce-up {
   0% {
     opacity: 0;
-    transform: translateY(40%);
+    transform: translateY(50%);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-25%);
   }
   60% {
-    opacity: 1;
-    transform: translateY(-10%);
+    transform: translateY(5%);
   }
   80% {
-    transform: translateY(5%);
+    transform: translateY(-10%);
   }
   100% {
     opacity: 1;
@@ -33,6 +36,6 @@
   }
 }
 .bounce-up-once {
-  animation: bounce-up 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation: bounce-up 1s cubic-bezier(0.2, 0.8, 0.4, 1);
   display: inline-block;
 }

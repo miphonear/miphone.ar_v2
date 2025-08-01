@@ -7,7 +7,6 @@ import Contenido from './Contenido'
 import Footer from './Footer'
 import Header from './Header'
 import Nav from './Nav'
-import Opiniones from './OpinionesGoogle'
 import ScrollToTopButton from './ScrollToTopButton'
 import WhatsAppFloat from './WhatsAppFloat'
 
@@ -40,9 +39,6 @@ export default function PageClient() {
         <BrandsCarousel onSearch={handleSearch} />
         <section className="mt-12">
           <Contenido query={query} setQuery={handleSearch} />
-        </section>
-        <section className="mt-16">
-          <Opiniones />
         </section>
       </main>
       <Footer />

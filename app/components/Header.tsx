@@ -2,21 +2,12 @@
 import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 
-const palabras = ['Lo', 'bueno', 'se', 'recomienda.']
-
 export default function Header() {
-  const [show, setShow] = useState([false, false, false, false])
+  const [anim, setAnim] = useState(true)
 
   useEffect(() => {
-    palabras.forEach((_, i) => {
-      setTimeout(() => {
-        setShow((prev) => {
-          const nuevo = [...prev]
-          nuevo[i] = true
-          return nuevo
-        })
-      }, i * 180) // delay
-    })
+    const timeout = setTimeout(() => setAnim(false), 1300)
+    return () => clearTimeout(timeout)
   }, [])
 
   return (
@@ -25,18 +16,14 @@ export default function Header() {
         {/* Slogan */}
         <div className="w-full flex justify-center mb-4">
           <h2 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
-            {palabras.map((palabra, i) => (
-              <span
-                key={palabra}
-                className={`mx-1 ${show[i] ? 'bounce-up-once' : 'opacity-0'} ${
-                  palabra === 'recomienda.'
-                    ? 'bg-gradient-to-r from-[#FF6D0C] to-[#C051FF] text-transparent bg-clip-text'
-                    : ''
-                }`}
-              >
-                {palabra}
-              </span>
-            ))}
+            Lo bueno se{' '}
+            <span
+              className={`bg-gradient-to-r from-[#FF6D0C] to-[#C051FF] text-transparent bg-clip-text ${
+                anim ? 'bounce-up-once' : ''
+              }`}
+            >
+              recomienda.
+            </span>
           </h2>
         </div>
 
