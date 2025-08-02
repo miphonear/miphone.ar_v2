@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Send } from 'lucide-react'
+import { Facebook, Instagram, Send, Mail } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -37,6 +37,21 @@ export default function Footer() {
           >
             <Send className="w-6 h-6 inline" />
           </Link>
+          <a
+            href="mailto:info@miphone.ar"
+            aria-label="Email miPhone"
+            className="text-gray-700 hover:text-orange-500 transition-colors duration-400"
+          >
+            <Mail className="w-6 h-6 inline" />
+          </a>
+        </div>
+        <div className="text-sm text-gray-500 mt-2">
+          <a
+            href="mailto:hola@miphone.ar"
+            className="hover:text-orange-500 transition-colors duration-400 underline"
+          >
+            info@miphone.ar
+          </a>
         </div>
       </div>
     </footer>
