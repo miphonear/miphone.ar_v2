@@ -84,7 +84,7 @@ export default function ProductosAccesorios({
               leaveFrom="opacity-100 max-h-[1000px]"
               leaveTo="opacity-0 max-h-0"
             >
-              <Disclosure.Panel static className="px-6 py-6 overflow-hidden">
+              <Disclosure.Panel static className="px-6 py-2 pb-6 overflow-hidden">
                 {alerta && <Alert>{alerta}</Alert>}
                 <div className="space-y-4">
                   {productosFiltrados.map((row, idxRow) => (

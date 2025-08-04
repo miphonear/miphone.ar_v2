@@ -41,7 +41,7 @@ export default function Nav() {
         </Link>
       </div>
       {/* Tabs (Garantías / Pagos / FAQ) */}
-      <div className="w-full max-w-3xl mx-auto mb-2">
+      <div className="w-full max-w-3xl mx-auto mb-4">
         <nav className="flex justify-center bg-white">
           {TABS.map((tab) => (
             <button
