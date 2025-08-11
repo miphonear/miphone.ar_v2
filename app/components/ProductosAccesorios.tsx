@@ -17,6 +17,7 @@ interface Props {
   nombre: string
   headers: string[]
   productos: string[][]
+  alerta?: string
   open?: boolean
 }
 
