@@ -1,8 +1,8 @@
-// app/components/ModalFotos.tsx
 'use client'
 import { Dialog as HDialog, Transition } from '@headlessui/react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
-import { Fragment, useEffect, useState } from 'react'
+import Image from 'next/image'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 
 interface ModalFotosProps {
   open: boolean
@@ -12,14 +12,55 @@ interface ModalFotosProps {
 
 export default function ModalFotos({ open, fotos, onClose }: ModalFotosProps) {
   const [current, setCurrent] = useState(0)
+  const [fade, setFade] = useState(true)
 
   // Reset al abrir/cerrar
   useEffect(() => {
     if (!open) setCurrent(0)
   }, [open])
 
-  const goPrev = () => setCurrent((prev) => (prev === 0 ? fotos.length - 1 : prev - 1))
-  const goNext = () => setCurrent((prev) => (prev === fotos.length - 1 ? 0 : prev + 1))
+  // Funciones memoizadas para evitar recreación
+  const goPrev = useCallback(() => {
+    setFade(false)
+    setTimeout(() => {
+      setCurrent((prev) => (prev === 0 ? fotos.length - 1 : prev - 1))
+      setFade(true)
+    }, 150)
+  }, [fotos.length])
+
+  const goNext = useCallback(() => {
+    setFade(false)
+    setTimeout(() => {
+      setCurrent((prev) => (prev === fotos.length - 1 ? 0 : prev + 1))
+      setFade(true)
+    }, 150)
+  }, [fotos.length])
+
+  // Navegación por teclado
+  useEffect(() => {
+    if (!open) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') goPrev()
+      if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'Escape') onClose()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [open, goPrev, goNext, onClose])
+
+  // Precarga de imágenes adyacentes
+  useEffect(() => {
+    if (fotos.length > 1) {
+      const nextIndex = (current + 1) % fotos.length
+      const prevIndex = (current - 1 + fotos.length) % fotos.length
+      new window.Image().src = fotos[nextIndex]
+      new window.Image().src = fotos[prevIndex]
+    }
+  }, [current, fotos])
+
+  if (!fotos || fotos.length === 0) return null
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -58,9 +99,9 @@ export default function ModalFotos({ open, fotos, onClose }: ModalFotosProps) {
               >
                 <X className="w-6 h-6" />
               </button>
+
               {/* Carrusel */}
               <div className="flex flex-col items-center px-4 py-8">
-                {/* Imagen y botones en fila */}
                 <div className="flex flex-row items-center w-full justify-center gap-4">
                   {/* Botón izquierdo */}
                   {fotos.length > 1 && (
@@ -72,16 +113,25 @@ export default function ModalFotos({ open, fotos, onClose }: ModalFotosProps) {
                       <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600 transition-colors group-hover:text-orange-500" />
                     </button>
                   )}
-                  {/* Imagen */}
+
+                  {/* Imagen con fade */}
                   <div className="flex-shrink flex items-center justify-center min-w-0">
-                    <img
+                    <Image
                       src={fotos[current]}
                       alt={`Foto ${current + 1}`}
-                      className="max-h-[50vh] max-w-[60vw] object-contain rounded"
-                      loading="lazy"
-                      style={{ display: 'block', margin: '0 auto' }}
+                      width={800}
+                      height={600}
+                      className={`max-h-[50vh] max-w-[60vw] object-contain rounded transition-opacity duration-200 ${
+                        fade ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      style={{
+                        display: 'block',
+                        margin: '0 auto',
+                      }}
+                      priority={false}
                     />
                   </div>
+
                   {/* Botón derecho */}
                   {fotos.length > 1 && (
                     <button
@@ -93,6 +143,7 @@ export default function ModalFotos({ open, fotos, onClose }: ModalFotosProps) {
                     </button>
                   )}
                 </div>
+
                 {/* Indicador de foto */}
                 <div className="w-full pt-6 flex items-center justify-center">
                   <span className="text-gray-500 text-sm">

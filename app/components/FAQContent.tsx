@@ -1,4 +1,3 @@
-// app/components/FAQContent.tsx
 'use client'
 import { useState } from 'react'
 
@@ -107,39 +106,54 @@ const items = [
 ]
 
 export default function FAQContent() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [open, setOpen] = useState<string | null>(null)
 
   return (
     <div>
-      {items.map((item, i) => (
-        <div key={i} className="border-b last:border-b-0">
-          <button
-            className={`flex w-full items-center justify-between py-3 text-left font-semibold text-gray-800 transition-colors hover:text-orange-600 focus:outline-none ${
-              open === i ? 'text-orange-600' : ''
-            }`}
-            onClick={() => setOpen(open === i ? null : i)}
-            aria-expanded={open === i}
-          >
-            <span>{item.title}</span>
-            <span className="text-lg">{open === i ? '−' : '+'}</span>
-          </button>
-          {open === i && (
-            <div className="pb-2 pl-2">
-              {item.links.map((link, j) => (
-                <a
-                  key={j}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block px-2 py-1 rounded hover:bg-orange-50 transition-colors text-sm"
-                >
-                  {link.text}
-                </a>
-              ))}
+      {items.map((item) => {
+        const isOpen = open === item.title
+        const contentId = `faq-content-${item.title.replace(/\s+/g, '-')}`
+
+        return (
+          <div key={item.title} className="border-b last:border-b-0">
+            <button
+              className={`flex w-full items-center justify-between py-3 text-left font-semibold text-gray-800 transition-colors hover:text-orange-600 focus:outline-none ${
+                isOpen ? 'text-orange-600' : ''
+              }`}
+              onClick={() => setOpen(isOpen ? null : item.title)}
+              aria-expanded={isOpen}
+              aria-controls={contentId}
+            >
+              <span>{item.title}</span>
+              <span className="text-lg" aria-hidden="true">
+                {isOpen ? '−' : '+'}
+              </span>
+            </button>
+
+            <div
+              id={contentId}
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <ul className="space-y-1 pb-2 pl-2">
+                {item.links.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-2 py-1 rounded hover:bg-orange-50 transition-colors text-sm"
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
-        </div>
-      ))}
+          </div>
+        )
+      })}
     </div>
   )
 }

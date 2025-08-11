@@ -2,6 +2,14 @@
 import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 
+// Lista de badges
+const BADGES = [
+  { emoji: '🛒', text: 'Tienda Online' },
+  { emoji: '✅', text: 'Productos originales' },
+  { emoji: '🚗', text: 'Entregas en CABA y GBA' },
+  { emoji: '📦', text: 'Envíos a todo el país' },
+]
+
 export default function Header() {
   const [anim, setAnim] = useState(true)
 
@@ -15,7 +23,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex flex-col items-center">
         {/* Slogan */}
         <div className="w-full flex justify-center mb-4">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
             Lo bueno se{' '}
             <span
               className={`bg-gradient-to-r from-[#FF6D0C] to-[#C051FF] text-transparent bg-clip-text ${
@@ -24,15 +32,16 @@ export default function Header() {
             >
               recomienda.
             </span>
-          </h2>
+          </h1>
         </div>
 
         {/* Badges */}
         <div className="flex flex-wrap justify-center gap-2 mb-4">
-          <Badge emoji="🛒">Tienda Online</Badge>
-          <Badge emoji="✅">Productos originales</Badge>
-          <Badge emoji="🚗">Entregas en CABA y GBA</Badge>
-          <Badge emoji="📦">Envíos a todo el país</Badge>
+          {BADGES.map((badge, i) => (
+            <Badge key={i} emoji={badge.emoji}>
+              {badge.text}
+            </Badge>
+          ))}
         </div>
       </div>
     </header>

@@ -3,8 +3,12 @@ import './globals.css'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Metadata, Viewport } from 'next'
 
-export const metadata = {
+// =====================
+// METADATA SEO
+// =====================
+export const metadata: Metadata = {
   title: 'miPhone™',
   description:
     'Descubrí los mejores precios en productos tecnológicos. iPhone, Apple, Samsung, Xiaomi, Consolas, Gaming, Fotografía y más. ¡A un clic de distancia!',
@@ -37,16 +41,40 @@ export const metadata = {
     locale: 'es_AR',
   },
   metadataBase: new URL('https://miphone.ar'),
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
-const inter = Inter({ subsets: ['latin'], weight: ['400', '700', '900'] })
+// =====================
+// VIEWPORT CONFIG
+// =====================
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+}
 
-export default function RootLayout({ children }) {
+// =====================
+// FUENTE
+// =====================
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+  display: 'swap', // Evita FOIT (Flash of Invisible Text)
+})
+
+// =====================
+// LAYOUT
+// =====================
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={inter.className}>
       <head>
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-VTHYM5J1V2"
@@ -62,7 +90,8 @@ export default function RootLayout({ children }) {
         </Script>
       </head>
       <body>
-        {children} <SpeedInsights />
+        {children}
+        <SpeedInsights />
       </body>
     </html>
   )

@@ -1,6 +1,5 @@
 // lib/glosario.ts
 export const GLOSARIO: Record<string, { adj: string; art: string }> = {
-  ACCESORIOS: { adj: 'están disponibles', art: 'las' },
   AIRPODS: { adj: 'están disponibles', art: 'los' },
   AIRTAG: { adj: 'están disponibles', art: 'los' },
   'APPLE WATCH': { adj: 'está disponible', art: 'el' },
@@ -8,17 +7,15 @@ export const GLOSARIO: Record<string, { adj: string; art: string }> = {
   GOPRO: { adj: 'está disponible', art: 'la' },
   INSTA360: { adj: 'está disponible', art: 'la' },
   IPAD: { adj: 'está disponible', art: 'el' },
-  'IPHONE SEMINUEVOS': { adj: 'está disponible', art: 'el' },
   IPHONE: { adj: 'está disponible', art: 'el' },
-  'MACBOOK AIR': { adj: 'está disponible', art: 'la' },
-  'MACBOOK PRO': { adj: 'está disponible', art: 'la' },
+  MACBOOK: { adj: 'está disponible', art: 'la' },
   'NINTENDO SWITCH': { adj: 'está disponible', art: 'la' },
   PLAYSTATION: { adj: 'está disponible', art: 'la' },
-  SAMSUNG: { adj: 'está disponible', art: 'el' },
+  'SAMSUNG GALAXY': { adj: 'está disponible', art: 'el' },
   SMARTWATCH: { adj: 'están disponibles', art: 'los' },
   VR: { adj: 'están disponibles', art: 'los' },
   XBOX: { adj: 'está disponible', art: 'la' },
   XIAOMI: { adj: 'está disponible', art: 'el' },
-  'XIAOMI (POCO)': { adj: 'está disponible', art: 'el' },
-  'XIAOMI (REDMI + REDMI NOTE)': { adj: 'está disponible', art: 'el' },
+  REALME: { adj: 'está disponible', art: 'el' },
+  PIXEL: { adj: 'está disponible', art: 'el' },
 }
