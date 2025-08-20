@@ -38,7 +38,7 @@ export default function Nav() {
       </div>
 
       {/* Tabs */}
-      <div className="w-full max-w-3xl mx-auto mb-4">
+      <div className="w-full max-w-3xl mx-auto">
         <nav className="flex justify-center bg-white">
           {TABS.map((tab) => (
             <button

@@ -20,7 +20,7 @@ export default function Header() {
 
   return (
     <header className="bg-transparent">
-      <div className="container mx-auto px-4 py-4 flex flex-col items-center">
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center">
         {/* Slogan */}
         <div className="w-full flex justify-center mb-4">
           <h1 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
