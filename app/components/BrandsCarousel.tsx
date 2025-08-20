@@ -5,6 +5,7 @@ import { useRef, useEffect } from 'react'
 // Logos
 import AppleLogo from '@/public/images/brands/apple-logo.svg'
 import CanonLogo from '@/public/images/brands/canon-logo.svg'
+import TamronLogo from '@/public/images/brands/tamron-logo.svg'
 import DjiLogo from '@/public/images/brands/dji-logo.svg'
 import GalaxyLogo from '@/public/images/brands/galaxy-logo.svg'
 import GoproLogo from '@/public/images/brands/gopro-logo.svg'
@@ -40,6 +41,7 @@ const MARCAS = [
   { name: 'Nikon', Logo: NikonLogo, tag: 'Nikon' },
   { name: 'Sony', Logo: SonyLogo, tag: 'Sony' },
   { name: 'Sigma', Logo: SigmaLogo, tag: 'Sigma' },
+  { name: 'Tamron', Logo: TamronLogo, tag: 'Tamron' },
   { name: 'DJI', Logo: DjiLogo, tag: 'Dji' },
 ]
 

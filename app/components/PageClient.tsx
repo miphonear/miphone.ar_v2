@@ -35,7 +35,6 @@ export default function PageClient() {
     <div className="relative">
       {/* Fondo global */}
       <BackgroundBlobs />
-
       <AnnouncementBar />
       <Nav />
       <Header />
