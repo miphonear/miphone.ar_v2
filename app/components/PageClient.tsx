@@ -22,7 +22,7 @@ export default function PageClient() {
     setQuery(q)
   }, [searchParams])
 
-  function handleSearch(newQuery) {
+  function handleSearch(newQuery: string) {
     setQuery(newQuery)
     if (newQuery && newQuery.length > 0) {
       router.replace(`${pathname}?q=${encodeURIComponent(newQuery)}`)
@@ -32,19 +32,27 @@ export default function PageClient() {
   }
 
   return (
-    <div className="relative">
+    <div className="flex flex-col min-h-screen relative">
       {/* Fondo global */}
       <BackgroundBlobs />
+
+      {/* Header fijo arriba */}
       <AnnouncementBar />
       <Nav />
       <Header />
-      <main className="pt-4 px-4 md:px-8 relative z-10">
+
+      {/* Main crece y empuja el footer hacia abajo */}
+      <main className="flex-grow pt-4 px-4 md:px-8 relative z-10">
         <BrandsCarousel onSearch={handleSearch} />
         <section className="mt-12">
           <Contenido query={query} setQuery={handleSearch} />
         </section>
       </main>
+
+      {/* Footer siempre abajo */}
       <Footer />
+
+      {/* Botones flotantes */}
       <ScrollToTopButton />
       <WhatsAppFloat />
     </div>

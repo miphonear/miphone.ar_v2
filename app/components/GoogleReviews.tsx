@@ -3,7 +3,7 @@
 
 export default function GoogleReviews() {
   return (
-    <section className="mt-12">
+    <section className="mt-36">
       <div className="max-w-xl md:max-w-5xl mx-auto px-2 md:px-4">
         <h2 className="text-xl md:text-2xl text-gray-800 font-bold mb-4 text-center text-primary">
           ¿Qué opinan nuestros clientes?

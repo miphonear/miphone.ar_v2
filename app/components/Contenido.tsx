@@ -41,9 +41,9 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24">
+      <div className="flex flex-col items-center justify-center min-h-[50vh]">
         <span
-          className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-orange-500 border-t-transparent"
+          className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-orange-500 border-t-transparent"
           role="status"
           aria-label="Cargando"
         ></span>
