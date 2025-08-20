@@ -41,7 +41,7 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh]">
+      <div className="flex flex-col items-center justify-center min-h-[30vh] md:min-h-[60vh]">
         <span
           className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-orange-500 border-t-transparent"
           role="status"
