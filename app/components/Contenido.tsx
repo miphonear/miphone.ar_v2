@@ -89,7 +89,7 @@ export default function Contenido({ query, setQuery }: ContenidoProps) {
                 showAcordeones ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
               }`}
               style={{
-                transitionDelay: `${i * 0.1}s`, // delay escalonado
+                transitionDelay: `${i * 0.06}s`, // delay escalonado
               }}
             >
               <Productos

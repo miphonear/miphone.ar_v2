@@ -113,22 +113,18 @@ export default function ModalFotos({ open, fotos, onClose }: ModalFotosProps) {
                       <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-600 transition-colors group-hover:text-orange-500" />
                     </button>
                   )}
-
                   {/* Imagen con fade */}
-                  <div className="flex-shrink flex items-center justify-center min-w-0">
+                  <div className="flex items-center justify-center max-w-[95vw] max-h-[80vh]">
                     <Image
                       src={fotos[current]}
                       alt={`Foto ${current + 1}`}
                       width={800}
                       height={600}
-                      className={`max-h-[50vh] max-w-[60vw] object-contain rounded transition-opacity duration-200 ${
+                      className={`object-contain rounded transition-opacity duration-200 ${
                         fade ? 'opacity-100' : 'opacity-0'
                       }`}
-                      style={{
-                        display: 'block',
-                        margin: '0 auto',
-                      }}
                       priority={false}
+                      sizes="95vw"
                     />
                   </div>
 

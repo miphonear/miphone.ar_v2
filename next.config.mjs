@@ -8,7 +8,10 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['lh3.googleusercontent.com'], // ✅ dominio permitido para <Image>
+    domains: [
+      'lh3.googleusercontent.com', // Google
+      'm.media-amazon.com', // Amazon
+    ],
   },
 }
 
