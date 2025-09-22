@@ -1,5 +1,5 @@
 'use client'
-import { X } from 'lucide-react'
+import { X, CircleDollarSign } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 
 // Configuración
@@ -8,6 +8,7 @@ const COTI_URL =
 const COTI_KEY = 'cotiBlue'
 const COTI_TTL = 15 * 60 * 1000 // 15 minutos
 
+// Obtener cotización cacheada
 function getCachedCotizacion(): string | null {
   try {
     const raw = localStorage.getItem(COTI_KEY)
@@ -20,12 +21,25 @@ function getCachedCotizacion(): string | null {
   }
 }
 
+// Guardar cotización en cache
 function setCachedCotizacion(value: string) {
   try {
     localStorage.setItem(COTI_KEY, JSON.stringify({ value, time: Date.now() }))
   } catch {
     // Ignorar errores de localStorage (ej: en modo incógnito)
   }
+}
+
+// Sanitizador: si no cumple el formato esperado de número en dólares → devolvemos "N/A"
+function sanitizeValue(raw: string | null | undefined): string {
+  if (!raw) return 'N/A'
+  const clean = raw.trim()
+
+  // Regex: acepta $ + dígitos, opcional separador de miles con punto, opcional decimales con coma
+  // Ejemplos válidos: $1360 | $1.360 | $12.500,50
+  const regex = /^\$\d{1,3}(\.\d{3})*(,\d+)?$|^\$\d+$/
+
+  return regex.test(clean) ? clean : 'N/A'
 }
 
 export default function AnnouncementBar() {
@@ -36,7 +50,7 @@ export default function AnnouncementBar() {
   const fetchCotizacion = useCallback(async () => {
     const cached = getCachedCotizacion()
     if (cached) {
-      setCotizacion(cached)
+      setCotizacion(sanitizeValue(cached))
       setLoading(false)
       return
     }
@@ -47,12 +61,13 @@ export default function AnnouncementBar() {
       const csv = await res.text()
 
       // Tomar la primera celda de la primera fila
-      const firstCell = csv.trim().split('\n')[0]?.split(',')[0]?.replace(',', '.') || 'N/A'
+      const firstCell = csv.trim().split('\n')[0]?.split(',')[0] || null
+      const safeValue = sanitizeValue(firstCell)
 
       setCotizacion((prev) => {
-        if (prev !== firstCell) {
-          setCachedCotizacion(firstCell)
-          return firstCell
+        if (prev !== safeValue) {
+          setCachedCotizacion(safeValue)
+          return safeValue
         }
         return prev
       })
@@ -72,15 +87,21 @@ export default function AnnouncementBar() {
   if (!visible) return null
 
   return (
-    <div className="w-full bg-gray-100 text-gray-700 text-xs md:text-sm font-semibold py-1 px-4 flex items-center justify-center select-none relative">
-      <span aria-live="polite" className="flex items-center gap-1">
-        Dólar hoy:{' '}
+    <div className="w-full bg-gray-100 text-gray-700 text-xs md:text-base font-semibold py-2 px-4 flex items-center justify-center select-none relative">
+      <span aria-live="polite" className="flex items-center gap-2">
+        {/* Ícono dólar */}
+        <CircleDollarSign className="w-4 h-4 text-green-600" />
+        <span>Dólar hoy:</span>
         {loading ? (
+          // Skeleton loader mientras carga
           <span className="inline-block w-12 h-4 bg-gray-300 rounded animate-pulse" />
         ) : (
+          // Valor seguro o "N/A"
           <span className="font-bold">{cotizacion}</span>
         )}
       </span>
+
+      {/* Botón cerrar */}
       <button
         className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 transition"
         onClick={() => setVisible(false)}

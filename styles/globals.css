@@ -1,0 +1,79 @@
+/* ===========================
+   Tailwind base / components / utilities
+   =========================== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   Scrollbar utilities
+   =========================== */
+
+/* Oculta la barra de scroll horizontal y vertical en navegadores */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
+/* ===========================
+   Animación: Bounce Up
+   =========================== */
+/* 
+   Efecto de "rebote hacia arriba".
+   - Útil para destacar un elemento al cargar o al hacer hover.
+   - Hace que el elemento suba, rebote y se estabilice.
+*/
+@keyframes bounce-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-25%);
+  }
+  60% {
+    transform: translateY(5%);
+  }
+  80% {
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clase utilitaria para aplicar el efecto una sola vez */
+.bounce-up-once {
+  animation: bounce-up 1s cubic-bezier(0.2, 0.8, 0.4, 1);
+  display: inline-block;
+}
+
+/* ===========================
+   Animación: Slide Down
+   =========================== */
+/* 
+   Efecto de "caída suave hacia abajo".
+   - Útil para mostrar cards, dropdowns o paneles.
+   - Hace que el elemento aparezca desde arriba con opacidad.
+*/
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clase utilitaria para aplicar el efecto */
+.animate-slideDown {
+  animation: slideDown 0.4s ease-out forwards;
+}

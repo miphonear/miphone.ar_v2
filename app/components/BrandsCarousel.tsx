@@ -1,6 +1,6 @@
+// app/components/BrandsCarousel.tsx
 'use client'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 
 // Logos
 import AppleLogo from '@/public/images/brands/apple-logo.svg'
@@ -22,7 +22,7 @@ import XboxLogo from '@/public/images/brands/xbox-logo.svg'
 import XiaomiLogo from '@/public/images/brands/xiaomi-logo.svg'
 
 interface BrandsCarouselProps {
-  onSearch: (_: string) => void
+  onSearch?: (value: string) => void
 }
 
 const MARCAS = [
@@ -45,93 +45,75 @@ const MARCAS = [
   { name: 'DJI', Logo: DjiLogo, tag: 'Dji' },
 ]
 
-const SCROLL_AMOUNT = 240
-const SCROLL_DURATION = 350
-
-function ScrollButton({
-  direction,
-  onClick,
-}: {
-  direction: 'left' | 'right'
-  onClick: () => void
-}) {
-  const Icon = direction === 'left' ? ChevronLeft : ChevronRight
-  const positionClass =
-    direction === 'left' ? 'left-0 -translate-x-full' : 'right-0 translate-x-full'
-
-  return (
-    <button
-      onClick={onClick}
-      aria-label={direction === 'left' ? 'Anterior' : 'Siguiente'}
-      className={`hidden md:block absolute ${positionClass} top-1/2 -translate-y-1/2 p-2 rounded-full bg-white border shadow hover:transition focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 group z-30`}
-    >
-      <Icon className="w-6 h-6 text-gray-600 transition-colors group-hover:text-orange-500" />
-    </button>
-  )
-}
+const SCROLL_SPEED = 0.35 // Velocidad
 
 export default function BrandsCarousel({ onSearch }: BrandsCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const animationFrameRef = useRef<number | null>(null)
+  const isHoveringRef = useRef(false)
+  const currentScrollRef = useRef(0) // Acumulador de scroll
   const marcasLoop = [...MARCAS, ...MARCAS]
 
-  useEffect(() => {
-    if (containerRef.current) {
+  const scrollAnimation = useCallback(() => {
+    if (containerRef.current && !isHoveringRef.current) {
       const el = containerRef.current
-      const halfScroll = (el.scrollWidth - el.clientWidth) / 2
-      el.scrollLeft = halfScroll
+      // Incrementamos el acumulador con precisión decimal
+      currentScrollRef.current += SCROLL_SPEED
+      // Aplicamos el valor redondeado al DOM
+      el.scrollLeft = Math.round(currentScrollRef.current)
+
+      const maxScroll = el.scrollWidth - el.clientWidth
+      const halfScroll = maxScroll / 2
+
+      if (el.scrollLeft >= halfScroll) {
+        // Reseteamos el acumulador y el scrollLeft
+        currentScrollRef.current -= halfScroll
+        el.scrollLeft -= halfScroll
+      }
     }
+    animationFrameRef.current = requestAnimationFrame(scrollAnimation)
   }, [])
 
-  const handleScroll = (direction: 'left' | 'right') => {
-    if (!containerRef.current) return
-    const el = containerRef.current
-    const maxScroll = el.scrollWidth - el.clientWidth
-    const halfScroll = maxScroll / 2
-
-    if (direction === 'right') {
-      el.scrollBy({ left: SCROLL_AMOUNT, behavior: 'smooth' })
-      setTimeout(() => {
-        if (el.scrollLeft >= maxScroll - SCROLL_AMOUNT) {
-          el.scrollLeft = halfScroll
-        }
-      }, SCROLL_DURATION)
-    } else {
-      el.scrollBy({ left: -SCROLL_AMOUNT, behavior: 'smooth' })
-      setTimeout(() => {
-        if (el.scrollLeft <= SCROLL_AMOUNT) {
-          el.scrollLeft = halfScroll
-        }
-      }, SCROLL_DURATION)
+  useEffect(() => {
+    animationFrameRef.current = requestAnimationFrame(scrollAnimation)
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
     }
+  }, [scrollAnimation])
+
+  const handleMouseEnter = () => {
+    isHoveringRef.current = true
+  }
+  const handleMouseLeave = () => {
+    isHoveringRef.current = false
   }
 
   return (
     <div className="bg-transparent">
-      <div className="max-w-xl md:max-w-5xl mx-auto px-2 md:px-4 relative">
-        {/* Gradientes */}
-        <div className="pointer-events-none absolute left-0 top-0 h-full w-16 sm:w-22 z-20 bg-gradient-to-r from-white/100 via-white/95 to-white/0" />
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 sm:w-22 z-20 bg-gradient-to-l from-white/100 via-white/95 to-white/0" />
-
-        {/* Botones */}
-        <ScrollButton direction="left" onClick={() => handleScroll('left')} />
-
-        {/* Carrusel */}
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-xl md:text-2xl text-gray-800 font-bold mb-6 text-center text-primary">
+          Productos de las mejores marcas
+        </h2>
         <div
           ref={containerRef}
-          className="flex gap-4 md:gap-10 overflow-x-auto px-1 md:px-2 no-scrollbar snap-x snap-mandatory scroll-smooth"
+          className="flex gap-12 md:gap-24 overflow-x-auto no-scrollbar"
           role="list"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {marcasLoop.map((m, i) => (
             <button
               key={`${m.name}-${i}`}
-              onClick={() => onSearch(m.tag)}
-              className="flex-shrink-0 snap-center focus:outline-none bg-transparent transition-transform duration-200 hover:scale-110 rounded-full group"
+              onClick={() => onSearch?.(m.tag)}
+              className="flex-shrink-0 focus:outline-none bg-transparent transition-transform duration-200 hover:scale-110"
               title={`Buscar productos de ${m.tag}`}
               role="listitem"
             >
               <div className="w-[70px] h-[35px] sm:w-[90px] sm:h-[45px] md:w-[120px] md:h-[60px] flex items-center justify-center p-1 sm:p-2">
                 <m.Logo
-                  className="max-h-full max-w-full filter grayscale opacity-60 transition duration-200 group-hover:filter-none group-hover:opacity-100"
+                  className="max-h-full max-w-full filter grayscale opacity-60 transition duration-200 hover:filter-none hover:opacity-100"
                   aria-label={m.name}
                   draggable={false}
                 />
@@ -139,8 +121,6 @@ export default function BrandsCarousel({ onSearch }: BrandsCarouselProps) {
             </button>
           ))}
         </div>
-
-        <ScrollButton direction="right" onClick={() => handleScroll('right')} />
       </div>
     </div>
   )

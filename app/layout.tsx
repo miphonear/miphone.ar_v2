@@ -1,5 +1,5 @@
 // app/layout.tsx
-import './globals.css'
+import 'styles/globals.css'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://miphone.ar/public/images/preview.jpg',
+        url: 'https://miphone.ar/images/preview.jpg',
         width: 1200,
         height: 630,
         alt: 'miPhone™',
@@ -44,6 +44,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: '/favicon.ico',
   },
 }
 
@@ -72,9 +75,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className={inter.className}>
       <head>
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-VTHYM5J1V2"

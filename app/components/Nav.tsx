@@ -1,71 +1,134 @@
 'use client'
-import { CreditCard, HelpCircle, ScrollText } from 'lucide-react'
-import Link from 'next/link'
 import { useState } from 'react'
-import Dialog from './Dialog'
-import FAQContent from './FAQContent'
+import Link from 'next/link'
+import { ScrollText, CreditCard, HelpCircle } from 'lucide-react'
+import Dialog from '@ui/Dialog'
 import GarantiasContent from './GarantiasContent'
 import PagosContent from './PagosContent'
-import LogoMiPhone from '@/public/images/logo-miphone.svg'
+import FAQContent from './FAQContent'
+import Imagotipo from '@/public/images/imagotipo-miphone.svg'
+import Isotipo from '@/public/images/isotipo-miphone.svg'
 
-// Configuración de tabs
-const TABS = [
-  { label: 'Garantías', labelMobile: 'Garantías', icon: ScrollText, key: 'garantias' },
-  { label: 'Medios de pago', labelMobile: 'Pagos', icon: CreditCard, key: 'pagos' },
-  { label: 'FAQ / Links', labelMobile: 'FAQ', icon: HelpCircle, key: 'faq' },
-] as const
-
-const BUTTON_CLASS =
-  'group relative min-w-[100px] flex-1 flex flex-col items-center justify-center gap-1 py-2 px-4 text-sm font-medium transition text-gray-600 hover:text-orange-500 focus:outline-none'
-
-const UNDERLINE_CLASS =
-  'absolute left-0 bottom-0 w-full h-0.5 rounded bg-orange-500 transition-transform duration-300 scale-x-0 group-hover:scale-x-100'
+/* --- Botón FAQ reutilizable --- */
+function FAQButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      type="button"
+      className="relative inline-flex items-center justify-center p-0.5 
+                 overflow-hidden text-sm font-semibold rounded-full 
+                 group bg-gradient-to-r from-orange-500 to-violet-600 
+                 hover:text-white"
+    >
+      <span
+        className="relative flex items-center gap-2 py-2 px-5 transition-all ease-in duration-75 
+                   bg-white rounded-full group-hover:bg-opacity-0"
+      >
+        <HelpCircle className="w-5 h-5" />
+        <span className="hidden sm:inline">FAQ | Links</span>
+        <span className="sm:hidden">FAQ</span>
+      </span>
+    </button>
+  )
+}
 
 export default function Nav() {
-  const [open, setOpen] = useState<null | string>(null)
+  const [open, setOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<'garantias' | 'pagos' | 'faq'>('faq')
 
   return (
-    <nav className="w-full pt-3 pb-0 bg-white shadow-sm z-30">
-      {/* Logo */}
-      <div className="container mx-auto flex justify-center items-center mb-0">
+    <nav className="w-full bg-white shadow-sm sticky top-0 z-50">
+      {/* --- MOBILE NAV --- */}
+      <div className="container mx-auto flex items-center justify-between px-4 py-2 md:hidden">
+        {/* Isotipo a la izquierda */}
         <Link href="/" className="block group" aria-label="Ir a inicio">
-          <LogoMiPhone
-            className="w-[200px] sm:w-[260px] md:w-[300px] lg:w-[320px] h-auto mx-auto transition-transform duration-200 group-hover:scale-105"
+          <Isotipo
+            className="w-[70px] h-auto transition-transform duration-200 group-hover:scale-100"
             draggable={false}
             aria-label="Logo miPhone"
           />
         </Link>
+
+        {/* FAQ a la derecha */}
+        <FAQButton onClick={() => setOpen(true)} />
       </div>
 
-      {/* Tabs */}
-      <div className="w-full max-w-3xl mx-auto">
-        <nav className="flex justify-center bg-white">
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`${BUTTON_CLASS} ${open === tab.key ? 'text-orange-600' : ''}`}
-              onClick={() => setOpen(tab.key)}
-              type="button"
-              aria-pressed={open === tab.key}
-            >
-              <tab.icon className="w-5 h-5 mb-0.5" />
-              <span className="hidden sm:block">{tab.label}</span>
-              <span className="sm:hidden">{tab.labelMobile}</span>
-              <span className={`${UNDERLINE_CLASS} ${open === tab.key ? 'scale-x-100' : ''}`} />
-            </button>
-          ))}
-        </nav>
+      {/* --- DESKTOP NAV --- */}
+      <div className="container mx-auto hidden md:grid grid-cols-[1fr_auto_1fr] items-center px-4 py-2">
+        {/* Columna izquierda vacía para balancear */}
+        <div />
+
+        {/* Logo centrado */}
+        <div className="flex justify-center">
+          <Link href="/" className="block group" aria-label="Ir a inicio">
+            <Imagotipo
+              className="w-[280px] lg:w-[340px] h-auto transition-transform duration-200 group-hover:scale-105"
+              draggable={false}
+              aria-label="Logo miPhone"
+            />
+          </Link>
+        </div>
+
+        {/* FAQ a la derecha */}
+        <div className="flex justify-end">
+          <FAQButton onClick={() => setOpen(true)} />
+        </div>
       </div>
 
-      {/* Dialogs */}
-      <Dialog open={open === 'garantias'} onClose={() => setOpen(null)} title="Garantías">
-        <GarantiasContent />
-      </Dialog>
-      <Dialog open={open === 'pagos'} onClose={() => setOpen(null)} title="Medios de Pago">
-        <PagosContent />
-      </Dialog>
-      <Dialog open={open === 'faq'} onClose={() => setOpen(null)} title="FAQ / Links">
-        <FAQContent />
+      {/* --- MODAL FAQ --- */}
+      <Dialog open={open} onClose={() => setOpen(false)} title="FAQ | Links útiles">
+        {/* Tabs internos */}
+        <div className="flex gap-4 border-b border-gray-200 mb-4">
+          {/* Garantías */}
+          <button
+            onClick={() => setActiveTab('garantias')}
+            className={`flex items-center gap-2 pb-2 text-sm font-medium ${
+              activeTab === 'garantias'
+                ? 'text-orange-600 border-b-2 border-orange-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <ScrollText className="w-4 h-4" />
+            Garantías
+          </button>
+
+          {/* Medios de pago / Pagos */}
+          <button
+            onClick={() => setActiveTab('pagos')}
+            className={`flex items-center gap-2 pb-2 text-sm font-medium ${
+              activeTab === 'pagos'
+                ? 'text-orange-600 border-b-2 border-orange-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <CreditCard className="w-4 h-4" />
+            {/* Mobile = Pagos / Desktop = Medios de pago */}
+            <span className="sm:hidden">Pagos</span>
+            <span className="hidden sm:inline">Medios de pago</span>
+          </button>
+
+          {/* Links útiles */}
+          <button
+            onClick={() => setActiveTab('faq')}
+            className={`flex items-center gap-2 pb-2 text-sm font-medium ${
+              activeTab === 'faq'
+                ? 'text-orange-600 border-b-2 border-orange-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <HelpCircle className="w-4 h-4" />
+            {/* Mobile = Links / Desktop = Links útiles */}
+            <span className="sm:hidden">Links</span>
+            <span className="hidden sm:inline">Links útiles</span>
+          </button>
+        </div>
+
+        {/* Contenido según tab */}
+        <div className="mt-2">
+          {activeTab === 'garantias' && <GarantiasContent />}
+          {activeTab === 'pagos' && <PagosContent />}
+          {activeTab === 'faq' && <FAQContent />}
+        </div>
       </Dialog>
     </nav>
   )

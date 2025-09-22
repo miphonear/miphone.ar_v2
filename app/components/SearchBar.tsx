@@ -1,53 +1,62 @@
 'use client'
 import { Search, X, Tag, Sparkles } from 'lucide-react'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
+import { useDebounce } from '@/app/hooks/useDebounce'
 
+// SECCIÓN: INTERFACES Y TIPOS
 interface Props {
-  value: string
-  onChange: (value: string) => void
-  onClear: () => void
+  initialValue?: string
+  onSearch: (value: string) => void
   placeholder?: string
   autoFocus?: boolean
 }
 
-// Botón sugerido
-function SuggestionButton({
-  icon: Icon,
-  label,
-  color,
-  onClick,
-}: {
-  icon: React.ElementType
-  label: string
-  color: 'orange' | 'violet'
-  onClick: () => void
-}) {
-  const colorClasses =
-    color === 'orange'
-      ? 'bg-orange-100 text-orange-700 ring-orange-300 hover:bg-orange-200 focus:ring-orange-400'
-      : 'bg-violet-100 text-violet-700 ring-violet-300 hover:bg-violet-200 focus:ring-violet-400'
-
+// SECCIÓN: COMPONENTE INTERNO PARA BOTONES SUGERIDOS
+function SuggestionButtons({ onShortcut }: { onShortcut: (s: string) => void }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={`Buscar ${label.toLowerCase()}`}
-      className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-b-xl font-bold text-xs ring-1 active:scale-95 hover:scale-105 transition-all duration-150 focus:outline-none focus:ring-2 ${colorClasses}`}
-    >
-      <Icon className="w-4 h-4" />
-      <span>{label}</span>
-    </button>
+    <div className="flex flex-wrap justify-start gap-2">
+      <button
+        type="button"
+        onClick={() => onShortcut('SALE')}
+        className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold rounded-xl
+                   bg-orange-100 text-orange-700 hover:bg-orange-200 
+                   transition-colors duration-150"
+      >
+        <Tag className="w-4 h-4" />
+        Ofertas
+      </button>
+      <button
+        type="button"
+        onClick={() => onShortcut('NEW')}
+        className="flex items-center gap-2 px-2.5 py-1.5 text-sm font-semibold rounded-xl
+                   bg-violet-100 text-violet-700 hover:bg-violet-200 
+                   transition-colors duration-150"
+      >
+        <Sparkles className="w-4 h-4" />
+        Nuevos
+      </button>
+    </div>
   )
 }
 
+// SECCIÓN: COMPONENTE PRINCIPAL
 export default function SearchBar({
-  value,
-  onChange,
-  onClear,
+  initialValue = '',
+  onSearch,
   placeholder = 'Buscar productos',
   autoFocus = false,
 }: Props) {
+  const [inputValue, setInputValue] = useState(initialValue)
   const inputRef = useRef<HTMLInputElement>(null)
+  const debouncedValue = useDebounce(inputValue, 500)
+
+  useEffect(() => {
+    onSearch(debouncedValue)
+  }, [debouncedValue, onSearch])
+
+  useEffect(() => {
+    setInputValue(initialValue)
+  }, [initialValue])
 
   useEffect(() => {
     if (autoFocus) {
@@ -56,65 +65,69 @@ export default function SearchBar({
   }, [autoFocus])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape' && value) {
-      onClear()
-      inputRef.current?.focus()
+    if (e.key === 'Escape' && inputValue) {
+      setInputValue('')
     }
   }
 
   const handleShortcut = (shortcut: string) => {
-    onChange(shortcut)
+    setInputValue(shortcut)
     inputRef.current?.focus()
   }
 
+  const handleClear = () => {
+    setInputValue('')
+    inputRef.current?.focus()
+  }
+
+  // SECCIÓN: RENDERIZADO
   return (
-    <div className="w-full max-w-lg mx-auto">
-      {/* Barra de búsqueda */}
-      <div className="relative mb-2">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true">
-          <Search className="w-5 h-5" />
-        </span>
-
-        <input
-          ref={inputRef}
-          type="text"
-          className="w-full pl-10 pr-10 py-2 rounded-full ring-2 ring-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
-          placeholder={placeholder}
-          aria-label={placeholder}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-
-        {value && (
-          <button
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500"
-            onClick={() => {
-              onClear()
-              inputRef.current?.focus()
-            }}
-            aria-label="Limpiar búsqueda"
-            type="button"
+    <div className="w-full max-w-2xl mx-auto">
+      {/* Contenedor principal unificado */}
+      <div
+        className="flex flex-col rounded-3xl border-2 border-gray-200 bg-white/90
+                   transition-all duration-200
+                   focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-500/20"
+      >
+        {/* Área del input */}
+        <div className="relative">
+          <span
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            aria-hidden="true"
           >
-            <X className="w-5 h-5" />
-          </button>
-        )}
-      </div>
+            <Search className="w-5 h-5" />
+          </span>
 
-      {/* Botones sugeridos */}
-      <div className="flex justify-center gap-2 mb-4">
-        <SuggestionButton
-          icon={Tag}
-          label="OFERTAS"
-          color="orange"
-          onClick={() => handleShortcut('SALE')}
-        />
-        <SuggestionButton
-          icon={Sparkles}
-          label="NUEVOS"
-          color="violet"
-          onClick={() => handleShortcut('NEW')}
-        />
+          <input
+            ref={inputRef}
+            type="text"
+            // Sin borde inferior para un look unificado
+            className="w-full pl-12 pr-10 py-2.5 bg-transparent 
+                       text-sm md:text-base text-gray-800 placeholder-gray-400 
+                       focus:outline-none"
+            placeholder={placeholder}
+            aria-label={placeholder}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+
+          {inputValue && (
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-500 hover:bg-orange-500 hover:text-white transition"
+              onClick={handleClear}
+              aria-label="Limpiar búsqueda"
+              type="button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Área de los botones sugeridos */}
+        <div className="p-3 pt-4">
+          <SuggestionButtons onShortcut={handleShortcut} />
+        </div>
       </div>
     </div>
   )

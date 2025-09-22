@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
+import SearchBar from './SearchBar'
 
-// Lista de badges
 const BADGES = [
   { emoji: '🛒', text: 'Tienda Online' },
   { emoji: '✅', text: 'Productos originales' },
@@ -10,7 +10,14 @@ const BADGES = [
   { emoji: '📦', text: 'Envíos a todo el país' },
 ]
 
-export default function Header() {
+// SECCIÓN: INTERFACES Y TIPOS
+interface HeaderProps {
+  initialValue: string
+  onSearch: (value: string) => void
+}
+
+// SECCIÓN: COMPONENTE PRINCIPAL
+export default function Header({ initialValue, onSearch }: HeaderProps) {
   const [anim, setAnim] = useState(true)
 
   useEffect(() => {
@@ -20,10 +27,10 @@ export default function Header() {
 
   return (
     <header className="bg-transparent">
-      <div className="container mx-auto px-4 py-8 flex flex-col items-center">
+      <div className="container mx-auto px-4 pt-12 pb-4 flex flex-col items-center">
         {/* Slogan */}
-        <div className="w-full flex justify-center mb-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-center leading-tight">
+        <div className="w-full flex justify-center mb-6">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-center leading-tight tracking-tight max-w-3xl">
             Lo bueno se{' '}
             <span
               className={`bg-gradient-to-r from-[#FF6D0C] to-[#C051FF] text-transparent bg-clip-text ${
@@ -36,13 +43,16 @@ export default function Header() {
         </div>
 
         {/* Badges */}
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <div className="flex flex-wrap justify-center gap-2 mb-6 md:mb-12">
           {BADGES.map((badge, i) => (
             <Badge key={i} emoji={badge.emoji}>
               {badge.text}
             </Badge>
           ))}
         </div>
+
+        {/* Search bar */}
+        <SearchBar initialValue={initialValue} onSearch={onSearch} />
       </div>
     </header>
   )
