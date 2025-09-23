@@ -3,7 +3,7 @@
 import Alert from '@ui/Alert'
 import type { Producto } from '@/app/types/Producto'
 import { useMemo } from 'react'
-import ProductModelCard from './ProductModelCard' // Nuevo componente
+import ProductModelCard from './ProductModelCard'
 
 // SECCIÓN: INTERFACES Y TIPOS
 interface Props {
@@ -13,22 +13,34 @@ interface Props {
 
 // SECCIÓN: COMPONENTE PRINCIPAL
 export default function ProductosGenericos({ productos, alerta }: Props) {
-  // SECCIÓN: FILTRADO Y AGRUPACIÓN
-  // Filtrar productos visibles (memoizado para optimización)
+  // SECCIÓN: FILTRADO
   const visibles = useMemo(
     () => productos.filter((p) => p.ocultar?.toLowerCase() !== 'x'),
     [productos],
   )
 
-  // Agrupación de productos memoizada para que solo se recalcule si 'visibles' cambia
+  // SECCIÓN: AGRUPACIÓN POR MODELO (PRESERVANDO EL ORDEN DEL CSV)
   const agrupadosPorModelo = useMemo(() => {
-    const agrupados: Record<string, Producto[]> = {}
+    // Usamos un array para mantener el orden de aparición de los modelos.
+    const agrupados: { modelo: string; variantes: Producto[] }[] = []
+    const modelosVistos = new Set<string>()
+
     visibles.forEach((p) => {
       const modelo = p.modelo?.trim() || '-'
-      if (!agrupados[modelo]) agrupados[modelo] = []
-      agrupados[modelo].push(p)
+      // Si es la primera vez que vemos este modelo, lo agregamos al array.
+      if (!modelosVistos.has(modelo)) {
+        modelosVistos.add(modelo)
+        // Agrupamos todas las variantes de este modelo de una sola vez.
+        const variantesParaEsteModelo = visibles.filter(
+          (prod) => (prod.modelo?.trim() || '-') === modelo,
+        )
+        agrupados.push({
+          modelo,
+          variantes: variantesParaEsteModelo,
+        })
+      }
     })
-    return Object.entries(agrupados)
+    return agrupados
   }, [visibles])
 
   // SECCIÓN: RENDERIZADO PRINCIPAL
@@ -43,7 +55,7 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
 
       {/* Render de productos a través del nuevo componente */}
       <div className="space-y-4">
-        {agrupadosPorModelo.map(([modelo, variantes], i) => (
+        {agrupadosPorModelo.map(({ modelo, variantes }, i) => (
           <ProductModelCard
             key={modelo}
             modelo={modelo}
