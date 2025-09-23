@@ -1,6 +1,6 @@
 'use client'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
 // SECCIÓN: IMPORTS DE COMPONENTES GLOBALES
 import AnnouncementBar from './AnnouncementBar'
@@ -16,27 +16,30 @@ import BackgroundBlobs from './BackgroundBlobs'
 
 // SECCIÓN: COMPONENTE PRINCIPAL
 export default function PageClient() {
-  // SECCIÓN: ESTADOS Y HOOKS DE NAVEGACIÓN
-  // Este estado ahora guarda el valor FINAL y DEBOUNCED de la búsqueda.
-  const [query, setQuery] = useState('')
+  // SECCIÓN: HOOKS DE NAVEGACIÓN
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Sincroniza el estado con la URL solo en la carga inicial de la página.
-  useEffect(() => {
-    const q = searchParams.get('q') || ''
-    setQuery(q)
-  }, [searchParams]) // Se ejecuta solo cuando los parámetros de la URL cambian.
+  // --- ¡AQUÍ ESTÁ EL CAMBIO PRINCIPAL! ---
+  // No más useState para la query. La derivamos directamente de la URL.
+  // La URL es ahora la única fuente de verdad.
+  const query = searchParams.get('q') || ''
 
-  // Función que recibe el valor FINAL y DEBOUNCED desde SearchBar.
+  // Esta función AHORA solo se encarga de actualizar la URL.
+  // El componente se re-renderizará automáticamente cuando la URL cambie.
   const handleSearch = useCallback(
-    (finalQuery: string) => {
-      setQuery(finalQuery)
-      const url = finalQuery ? `${pathname}?q=${encodeURIComponent(finalQuery)}` : pathname
-      router.replace(url)
+    (newQuery: string) => {
+      const params = new URLSearchParams(searchParams.toString())
+      if (newQuery) {
+        params.set('q', newQuery)
+      } else {
+        params.delete('q')
+      }
+      // Usamos replace para no ensuciar el historial del navegador
+      router.replace(`${pathname}?${params.toString()}`)
     },
-    [pathname, router],
+    [pathname, router, searchParams],
   )
 
   // SECCIÓN: RENDERIZADO PRINCIPAL
@@ -48,12 +51,14 @@ export default function PageClient() {
       {/* Header fijo arriba */}
       <AnnouncementBar />
       <Nav />
+      {/* El Header recibe la query derivada de la URL y la función para actualizarla */}
       <Header initialValue={query} onSearch={handleSearch} />
 
       {/* Main crece y empuja el footer hacia abajo */}
       <main className="flex-grow px-2 relative z-10">
         {/* Contenido principal */}
         <section>
+          {/* Contenido recibe la query derivada de la URL */}
           <Contenido query={query} />
         </section>
 
