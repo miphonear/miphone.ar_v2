@@ -30,34 +30,49 @@ export default function Contenido({ query }: ContenidoProps) {
     'https://docs.google.com/spreadsheets/d/e/2PACX-1vRr62BlKCzICpC0ctnU2mRB8cq_SOCcsgydXQJXD5pQvasO1b1iT0Wp_L7sFxH8UGJCepaMjng1GUO0/pub?gid=1307357173&single=true&output=csv',
   )
 
+  // Combinar productos preservando el orden: primero genéricos, luego especiales
   const productos = useMemo(() => [...genericos, ...especiales], [genericos, especiales])
   const loading = loadingGen || loadingEsp
   const error = errorGen || errorEsp
 
   // FILTRADO Y AGRUPACIÓN
   const categorias = useMemo(() => {
-    const map: Record<string, Record<string, Producto[]>> = {}
-    productos.forEach((p) => {
-      if (!map[p.categoria]) map[p.categoria] = {}
-      if (!map[p.categoria][p.subcategoria]) map[p.categoria][p.subcategoria] = []
-      map[p.categoria][p.subcategoria].push(p)
-    })
+    // Construcción con arrays para preservar el orden del CSV
+    const categoriasAgrupadas: {
+      nombre: string
+      subcategorias: {
+        nombre: string
+        productos: Producto[]
+        lineas: string[]
+      }[]
+    }[] = []
 
-    const categoriasAgrupadas = Object.entries(map).map(([categoria, subs]) => ({
-      nombre: categoria,
-      subcategorias: Object.entries(subs).map(([sub, items]) => ({
-        nombre: sub,
-        productos: items,
-        lineas: Array.from(new Set(items.map((p) => p.linea))).filter(Boolean),
-      })),
-    }))
+    productos.forEach((p) => {
+      let cat = categoriasAgrupadas.find((c) => c.nombre === p.categoria)
+      if (!cat) {
+        cat = { nombre: p.categoria, subcategorias: [] }
+        categoriasAgrupadas.push(cat)
+      }
+
+      let sub = cat.subcategorias.find((s) => s.nombre === p.subcategoria)
+      if (!sub) {
+        sub = { nombre: p.subcategoria, productos: [], lineas: [] }
+        cat.subcategorias.push(sub)
+      }
+
+      sub.productos.push(p)
+
+      if (p.linea && !sub.lineas.includes(p.linea)) {
+        sub.lineas.push(p.linea)
+      }
+    })
 
     return filtrarCategorias(categoriasAgrupadas, query)
   }, [productos, query])
 
   // ESTADOS DE NAVEGACIÓN
   const [cat, setCat] = useState('')
-  const categoriaActual = categorias.find((c) => c.nombre === cat)
+  const categoriaActual = useMemo(() => categorias.find((c) => c.nombre === cat), [categorias, cat])
   const [sub, setSub] = useState('')
   const [linea, setLinea] = useState<string>('')
 
@@ -65,32 +80,44 @@ export default function Contenido({ query }: ContenidoProps) {
   const [showSubcategorias, setShowSubcategorias] = useState(false)
   const [showLineas, setShowLineas] = useState(false)
 
-  // Selección inicial de categoría
+  // Selección inicial de categoría (optimizada)
   useEffect(() => {
-    const categoriaExiste = categorias.some((c) => c.nombre === cat)
-    if (categorias.length > 0 && !categoriaExiste) {
-      setCat(categorias[0].nombre)
-    } else if (categorias.length === 0) {
+    // Si no hay categorías, resetea todo
+    if (categorias.length === 0) {
       setCat('')
+      return
     }
-  }, [categorias, cat])
 
-  // Selección inicial de subcategoría
+    // Si la categoría actual no existe (ej: después de filtro)...
+    const categoriaExiste = categorias.some((c) => c.nombre === cat)
+    if (!categoriaExiste) {
+      // Si hay búsqueda activa, selecciona la primera categoría de resultados
+      if (query.trim()) {
+        setCat(categorias[0].nombre)
+      } else {
+        // En home sin búsqueda, no selecciona nada por defecto
+        setCat('')
+      }
+    }
+  }, [categorias, cat, query])
+
+  // Selección inicial de subcategoría (optimizada con useMemo)
   useEffect(() => {
-    if (categoriaActual) {
-      setSub(categoriaActual.subcategorias[0]?.nombre || '')
+    if (categoriaActual && categoriaActual.subcategorias.length > 0) {
+      setSub(categoriaActual.subcategorias[0].nombre)
       setLinea('')
     } else {
       setSub('')
+      setLinea('')
     }
-  }, [cat, categoriaActual])
+  }, [categoriaActual])
 
   // Selección automática de línea si existen
   useEffect(() => {
     const subcategoriaActual = categoriaActual?.subcategorias.find((s) => s.nombre === sub)
     if (subcategoriaActual) {
       if (subcategoriaActual.lineas.length > 0) {
-        setLinea(subcategoriaActual.lineas[0]) // ✅ siempre selecciona la primera
+        setLinea(subcategoriaActual.lineas[0])
       } else {
         setLinea('')
       }
