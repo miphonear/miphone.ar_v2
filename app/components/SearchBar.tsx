@@ -1,7 +1,6 @@
 'use client'
 import { Search, X, Tag, Sparkles } from 'lucide-react'
 import { useRef, useEffect, useState } from 'react'
-import { useDebounce } from '@/app/hooks/useDebounce'
 
 // SECCIÓN: INTERFACES Y TIPOS
 interface Props {
@@ -48,16 +47,32 @@ export default function SearchBar({
 }: Props) {
   const [inputValue, setInputValue] = useState(initialValue)
   const inputRef = useRef<HTMLInputElement>(null)
-  const debouncedValue = useDebounce(inputValue, 500)
 
+  // Reemplazamos el hook useDebounce por un useEffect manual para tener control total.
   useEffect(() => {
-    onSearch(debouncedValue)
-  }, [debouncedValue, onSearch])
+    // Si el valor del input ya es el que está en la URL, no hacemos nada para evitar bucles.
+    if (inputValue === initialValue) {
+      return
+    }
 
+    // Creamos un temporizador que llamará a la búsqueda después de 500ms.
+    const handler = setTimeout(() => {
+      onSearch(inputValue)
+    }, 500) // 500ms de debounce
+
+    // Esta función de limpieza es la clave: cancela el temporizador si el usuario
+    // sigue escribiendo o si el valor cambia desde afuera (ej: clic en un logo).
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [inputValue, initialValue, onSearch])
+
+  // Este useEffect sincroniza el estado del input si el valor viene de afuera (URL).
   useEffect(() => {
     setInputValue(initialValue)
   }, [initialValue])
 
+  // Este useEffect es para el autoFocus.
   useEffect(() => {
     if (autoFocus) {
       inputRef.current?.focus()
@@ -101,7 +116,6 @@ export default function SearchBar({
           <input
             ref={inputRef}
             type="text"
-            // Sin borde inferior para un look unificado
             className="w-full pl-12 pr-10 py-2.5 bg-transparent 
                        text-sm md:text-base text-gray-800 placeholder-gray-400 
                        focus:outline-none"
