@@ -4,9 +4,12 @@
 export default function GoogleReviews() {
   return (
     <section className="mt-16">
-      <h2 className="text-xl md:text-2xl text-gray-800 font-bold mb-6 text-center text-primary">
-        ¿Qué opinan nuestros clientes?
-      </h2>
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <span className="text-3xl">💬</span>
+        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
+          ¿Qué opinan nuestros clientes?
+        </h2>
+      </div>
       {/* Contenedor */}
       <div className="w-full h-[500px]">
         <iframe

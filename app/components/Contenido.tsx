@@ -8,6 +8,7 @@ import ProductosSeminuevos from './ProductosSeminuevos'
 import ProductosAccesorios from './ProductosAccesorios'
 import { ALERTAS } from '@/lib/constantes'
 import { filtrarCategorias } from '@/lib/filtrarCategorias'
+import ErrorMessage from '@ui/ErrorMessage'
 
 interface ContenidoProps {
   query: string
@@ -161,19 +162,23 @@ export default function Contenido({ query }: ContenidoProps) {
   }
 
   if (error) {
-    return <div className="text-center text-red-500 py-12">{error}</div>
+    return <ErrorMessage>{error}</ErrorMessage>
   }
 
   // RENDER PRINCIPAL
   return (
     <div className="max-w-6xl mx-auto">
-      <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-center text-primary mt-6 mb-2">
-        Explorá nuestro catálogo
-      </h2>
+      <div className="flex items-center justify-center gap-3 mt-6 mb-2">
+        <span className="text-3xl">✨</span>
+        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
+          Explorá nuestro catálogo
+        </h2>
+      </div>
 
       {categorias.length === 0 && query.trim() ? (
-        <div className="text-center text-gray-500 py-12">
-          🤔 No se encontraron productos para &ldquo;{query}&rdquo;.
+        <div className="flex flex-col items-center justify-center text-center text-gray-500 py-12">
+          <span className="block text-6xl mb-4">🤔</span>
+          No se encontraron productos para &ldquo;{query}&rdquo;.
           <br />
           Intentá con otra búsqueda o consultanos por WhatsApp.
         </div>
