@@ -93,10 +93,11 @@ export default function BrandsCarousel({ onSearch }: BrandsCarouselProps) {
   return (
     <div className="bg-transparent">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <span className="text-3xl">🏆</span>
-          <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
-            Productos de las mejores marcas
+        <div className="flex w-full items-center justify-center gap-2 mb-6">
+          <span className="text-2xl">🏆</span>
+          <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary text-center">
+            <span className="sm:hidden">Las mejores marcas</span>
+            <span className="hidden sm:inline">Productos de las mejores marcas</span>
           </h2>
         </div>
         <div

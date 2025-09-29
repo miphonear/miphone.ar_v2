@@ -168,8 +168,8 @@ export default function Contenido({ query }: ContenidoProps) {
   // RENDER PRINCIPAL
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex items-center justify-center gap-3 mt-6 mb-2">
-        <span className="text-3xl">✨</span>
+      <div className="flex items-center justify-center gap-2 mt-6 mb-2">
+        <span className="text-2xl">✨</span>
         <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
           Explorá nuestro catálogo
         </h2>

@@ -4,10 +4,11 @@
 export default function GoogleReviews() {
   return (
     <section className="mt-16">
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <span className="text-3xl">💬</span>
-        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
-          ¿Qué opinan nuestros clientes?
+      <div className="flex w-full items-center justify-center gap-2 mb-6">
+        <span className="text-2xl">🤝</span>
+        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary text-center">
+          <span className="sm:hidden">Nuestros clientes</span>
+          <span className="hidden sm:inline">¿Qué opinan nuestros clientes?</span>
         </h2>
       </div>
       {/* Contenedor */}
