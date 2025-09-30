@@ -168,15 +168,19 @@ export default function Contenido({ query }: ContenidoProps) {
   // RENDER PRINCIPAL
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex items-center justify-center gap-2 mt-6 mb-2">
-        <span className="text-2xl">✨</span>
-        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary">
+      <div className="flex flex-col items-center justify-center mt-6 mb-12">
+        <span className="text-3xl mb-2">✨</span>
+        <h2 className="relative inline-block text-xl md:text-2xl font-bold text-gray-800 pb-2">
           Explorá nuestro catálogo
+          <span
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 
+                 bg-gradient-to-r from-orange-400 to-violet-500 rounded-full"
+          ></span>
         </h2>
       </div>
 
       {categorias.length === 0 && query.trim() ? (
-        <div className="flex flex-col items-center justify-center text-center text-gray-500 py-12">
+        <div className="flex flex-col items-center justify-center text-center text-gray-600 py-12">
           <span className="block text-6xl mb-4">🤔</span>
           No se encontraron productos para &ldquo;{query}&rdquo;.
           <br />
@@ -208,10 +212,10 @@ export default function Contenido({ query }: ContenidoProps) {
                       ${
                         sub === s.nombre
                           ? 'bg-orange-500 text-white'
-                          : 'bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                          : 'bg-white text-gray-600 hover:text-gray-700 hover:bg-gray-100'
                       }`}
                   >
-                    {s.nombre} <span className="text-xs opacity-70">({s.productos.length})</span>
+                    {s.nombre} <span className="text-xs italic">({s.productos.length})</span>
                   </button>
                 ))}
               </div>
@@ -243,10 +247,10 @@ export default function Contenido({ query }: ContenidoProps) {
                             ${
                               linea === ln
                                 ? 'bg-orange-500 text-white'
-                                : 'bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                                : 'bg-white text-gray-600 hover:text-gray-700 hover:bg-gray-100'
                             }`}
                         >
-                          {ln} <span className="text-xs opacity-70">({count})</span>
+                          {ln} <span className="text-xs italic">({count})</span>
                         </button>
                       )
                     })}

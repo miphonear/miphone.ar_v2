@@ -56,9 +56,7 @@ export default function Footer() {
           <a
             href="mailto:info@miphone.ar"
             className="hover:text-orange-500 transition-colors duration-400 underline"
-          >
-            info@miphone.ar
-          </a>
+          ></a>
         </div>
       </div>
     </footer>

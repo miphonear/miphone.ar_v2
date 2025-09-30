@@ -3,12 +3,19 @@
 
 export default function GoogleReviews() {
   return (
-    <section className="mt-16">
-      <div className="flex w-full items-center justify-center gap-2 mb-6">
-        <span className="text-2xl">🤝</span>
-        <h2 className="text-xl md:text-2xl text-gray-800 font-bold text-primary text-center">
+    <section className="mt-12">
+      <div className="flex flex-col items-center justify-center mb-6">
+        <span className="text-3xl mb-2">🤝</span>
+        <h2 className="relative inline-block text-xl md:text-2xl font-bold text-gray-800 pb-2 text-center">
+          {/* Texto responsivo */}
           <span className="sm:hidden">Nuestros clientes</span>
           <span className="hidden sm:inline">¿Qué opinan nuestros clientes?</span>
+
+          {/* Subrayado decorativo */}
+          <span
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 
+                 bg-gradient-to-r from-orange-400 to-violet-500 rounded-full"
+          ></span>
         </h2>
       </div>
       {/* Contenedor */}

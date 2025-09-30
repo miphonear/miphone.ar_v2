@@ -15,23 +15,16 @@ function FAQButton({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       type="button"
-      className="relative inline-flex items-center justify-center p-0.5 
-                 overflow-hidden text-sm font-semibold rounded-full 
-                 group bg-gradient-to-r from-orange-500 to-violet-600 
-                 hover:text-white"
+      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 
+                 text-sm font-semibold text-white bg-orange-500 rounded-full 
+                 transition-all duration-200 hover:bg-orange-600 hover:scale-105"
     >
-      <span
-        className="relative flex items-center gap-2 py-2 px-5 transition-all ease-in duration-75 
-                   bg-white rounded-full group-hover:bg-opacity-0"
-      >
-        <HelpCircle className="w-5 h-5" />
-        <span className="hidden sm:inline">FAQ | Links</span>
-        <span className="sm:hidden">FAQ</span>
-      </span>
+      <HelpCircle className="w-5 h-5" />
+      <span className="hidden sm:inline">FAQ — Links</span>
+      <span className="sm:hidden">FAQ</span>
     </button>
   )
 }
-
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<'garantias' | 'pagos' | 'faq'>('faq')
@@ -76,7 +69,7 @@ export default function Nav() {
       </div>
 
       {/* --- MODAL FAQ --- */}
-      <Dialog open={open} onClose={() => setOpen(false)} title="FAQ | Links útiles">
+      <Dialog open={open} onClose={() => setOpen(false)} title="FAQ — Links útiles">
         {/* Tabs internos */}
         <div className="flex gap-4 border-b border-gray-200 mb-4">
           {/* Garantías */}

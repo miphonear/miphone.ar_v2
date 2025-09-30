@@ -89,37 +89,48 @@ export default function TabsCategorias({ categorias, cat, setCat }: Props) {
           return (
             <button
               key={c.nombre}
-              // Atributo de data para poder localizarlo en el useEffect
               data-categoria={c.nombre}
               onClick={(e) => {
                 setCat(c.nombre)
-                // 👉 Centramos el tab seleccionado al hacer click
                 scrollToCenter(e.currentTarget)
               }}
-              className={`flex flex-col items-center justify-center 
-                w-[120px] h-[120px] md:w-[160px] md:h-[160px] 
-                flex-shrink-0 rounded-2xl border 
-                transition-all duration-300 transform snap-center
-                ${
-                  isActive
-                    ? 'bg-orange-500 text-white border-orange-500 ring-2 ring-orange-500/20 shadow-md scale-105 md:-translate-y-1'
-                    : 'bg-white text-gray-800 border-gray-200 shadow-sm hover:shadow-md hover:scale-105 md:hover:-translate-y-1'
-                }`}
+              // La clase 'group' es clave para los efectos de hover en los hijos
+              className={`group relative flex flex-col items-center justify-center 
+    w-[120px] h-[120px] md:w-[160px] md:h-[160px] 
+    flex-shrink-0 rounded-2xl border 
+    transition-all duration-300 transform snap-center
+    ${
+      isActive
+        ? 'bg-orange-500 text-white border-orange-600 ring-2 ring-orange-500/20 shadow-sm scale-105 md:-translate-y-1'
+        : 'bg-white text-gray-800 border-gray-200 hover:border-gray-300 hover:shadow-md md:hover:-translate-y-1'
+    }`}
             >
               {/* Icono SVG dinámico */}
               <div className="w-12 h-12 mb-3 flex items-center justify-center">
                 <Icon
-                  className={`w-full h-full object-contain transition-all duration-200 ${
-                    isActive ? 'text-white scale-125' : 'text-gray-800'
+                  className={`w-full h-full object-contain transition-transform duration-300 ${
+                    isActive
+                      ? 'text-white scale-110' // Efecto cuando está activo
+                      : 'text-gray-700 group-hover:scale-125' // Efecto al hacer hover
                   }`}
                 />
               </div>
 
               {/* Texto */}
               <div className="px-2 w-full flex items-center justify-center">
-                <span className="text-sm md:text-base font-semibold text-center break-words leading-tight">
+                <span className="text-sm md:text-base font-bold text-center break-words leading-tight">
                   {c.nombre}
                 </span>
+              </div>
+
+              {/* "Call to Action" que aparece al interactuar */}
+              <div
+                className={`absolute bottom-3 items-center gap-1 text-xs font-bold 
+             transition-opacity duration-300
+             ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+             hidden md:flex`}
+              >
+                <span>Ver Productos</span>
               </div>
             </button>
           )
