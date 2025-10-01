@@ -58,6 +58,16 @@ export default function PageClient() {
       <main className="flex-grow px-2 relative z-10">
         {/* Contenido principal */}
         <section>
+          <div className="flex flex-col items-center justify-center mt-6 mb-12">
+            <span className="text-3xl mb-2">✨</span>
+            <h2 className="relative inline-block text-xl md:text-2xl font-bold text-gray-800 pb-2">
+              Explorá nuestro catálogo
+              <span
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 
+                 bg-gradient-to-r from-orange-400 to-violet-500 rounded-full"
+              ></span>
+            </h2>
+          </div>
           {/* Contenido recibe la query derivada de la URL */}
           <Contenido query={query} />
         </section>

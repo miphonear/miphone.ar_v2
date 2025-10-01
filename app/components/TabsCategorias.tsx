@@ -97,7 +97,7 @@ export default function TabsCategorias({ categorias, cat, setCat }: Props) {
               // La clase 'group' es clave para los efectos de hover en los hijos
               className={`group relative flex flex-col items-center justify-center 
     w-[120px] h-[120px] md:w-[160px] md:h-[160px] 
-    flex-shrink-0 rounded-2xl border 
+    flex-shrink-0 rounded-2xl border-2
     transition-all duration-300 transform snap-center
     ${
       isActive

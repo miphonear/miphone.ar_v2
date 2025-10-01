@@ -56,6 +56,7 @@ export default function Footer() {
           <a
             href="mailto:info@miphone.ar"
             className="hover:text-orange-500 transition-colors duration-400 underline"
+            aria-label="Enviar un correo electrónico a info@miphone.ar"
           ></a>
         </div>
       </div>

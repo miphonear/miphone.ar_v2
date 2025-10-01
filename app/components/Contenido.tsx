@@ -9,6 +9,7 @@ import ProductosAccesorios from './ProductosAccesorios'
 import { ALERTAS } from '@/lib/constantes'
 import { filtrarCategorias } from '@/lib/filtrarCategorias'
 import ErrorMessage from '@ui/ErrorMessage'
+import TabsSkeleton from '@ui/TabsSkeleton' // <-- Importa el nuevo componente
 
 interface ContenidoProps {
   query: string
@@ -150,15 +151,7 @@ export default function Contenido({ query }: ContenidoProps) {
 
   // ESTADOS ESPECIALES
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[30vh] md:min-h-[60vh]">
-        <span
-          className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-orange-500 border-t-transparent"
-          role="status"
-          aria-label="Cargando"
-        ></span>
-      </div>
-    )
+    return <TabsSkeleton />
   }
 
   if (error) {
@@ -168,17 +161,6 @@ export default function Contenido({ query }: ContenidoProps) {
   // RENDER PRINCIPAL
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex flex-col items-center justify-center mt-6 mb-12">
-        <span className="text-3xl mb-2">✨</span>
-        <h2 className="relative inline-block text-xl md:text-2xl font-bold text-gray-800 pb-2">
-          Explorá nuestro catálogo
-          <span
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-1 
-                 bg-gradient-to-r from-orange-400 to-violet-500 rounded-full"
-          ></span>
-        </h2>
-      </div>
-
       {categorias.length === 0 && query.trim() ? (
         <div className="flex flex-col items-center justify-center text-center text-gray-600 py-12">
           <span className="block text-6xl mb-4">🤔</span>
