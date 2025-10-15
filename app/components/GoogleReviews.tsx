@@ -19,7 +19,7 @@ export default function GoogleReviews() {
         </h2>
       </div>
       {/* Contenedor */}
-      <div className="w-full h-[500px]">
+      <div className="w-full h-[600px]">
         <iframe
           // Agregado: loading="lazy" para mejorar la performance
           loading="lazy"
