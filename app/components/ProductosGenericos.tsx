@@ -3,6 +3,8 @@ import Alert from '@ui/Alert'
 import type { Producto } from '@/app/types/Producto'
 import { useMemo } from 'react'
 import ProductModelCard from './ProductModelCard'
+import AccesoriosAlertCard from './AccesoriosAlertCard'
+import { SUBCATEGORIAS_CON_ALERTA_ACCESORIOS } from '@/lib/constantes'
 
 // SECCIÓN: INTERFACES Y TIPOS
 interface Props {
@@ -17,6 +19,18 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
     () => productos.filter((p) => p.ocultar?.toLowerCase() !== 'x'),
     [productos],
   )
+
+  // --- LÓGICA MODIFICADA PARA USAR LA LISTA DE SUBCATEGORÍAS ---
+  const shouldShowAccesoriosAlert = useMemo(() => {
+    // Si no hay productos visibles, no mostrar la alerta.
+    if (visibles.length === 0) return false
+
+    // Obtenemos la subcategoría del primer producto (todos tienen la misma en esta vista).
+    const subcategoriaActual = visibles[0]?.subcategoria?.toUpperCase()
+
+    // Solo mostramos la alerta si la subcategoría actual ESTÁ en nuestra lista de constantes.
+    return SUBCATEGORIAS_CON_ALERTA_ACCESORIOS.includes(subcategoriaActual)
+  }, [visibles])
 
   // SECCIÓN: AGRUPACIÓN POR MODELO (PRESERVANDO EL ORDEN DEL CSV)
   const agrupadosPorModelo = useMemo(() => {
@@ -73,6 +87,9 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
           />
         ))}
       </div>
+
+      {/* Render condicional de la tarjeta CTA de Accesorios */}
+      {shouldShowAccesoriosAlert && <AccesoriosAlertCard />}
     </div>
   )
 }

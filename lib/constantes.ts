@@ -1,3 +1,4 @@
+// --- Subcategorias en donde se muestra Alert.tsx ---
 export type SubcategoriaConAlerta =
   | 'MACBOOK'
   | 'IPHONE'
@@ -17,3 +18,16 @@ export const ALERTAS: Record<SubcategoriaConAlerta, string> = {
   CARGADORES: 'Cargadores certificados y seguros para tu equipo',
   CABLES: 'Cables certificados y seguros para tu equipo',
 }
+
+// --- Subcategorias en donde se muestra AccesoriosAlertCard.tsx ---
+export const SUBCATEGORIAS_CON_ALERTA_ACCESORIOS = [
+  'IPHONE',
+  'AIRPODS',
+  'WATCH',
+  'MACBOOK',
+  'IPAD',
+  'XIAOMI',
+  'SAMSUNG GALAXY',
+  'PIXEL',
+  'REALME',
+]
