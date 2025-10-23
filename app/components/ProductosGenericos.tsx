@@ -1,4 +1,3 @@
-// C:/Users/Guido/Desktop/miphone - copia/app/components/ProductosGenericos.tsx
 'use client'
 import Alert from '@ui/Alert'
 import type { Producto } from '@/app/types/Producto'
@@ -22,7 +21,11 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
   // SECCIÓN: AGRUPACIÓN POR MODELO (PRESERVANDO EL ORDEN DEL CSV)
   const agrupadosPorModelo = useMemo(() => {
     // Usamos un array para mantener el orden de aparición de los modelos.
-    const agrupados: { modelo: string; variantes: Producto[] }[] = []
+    const agrupados: {
+      modelo: string
+      variantes: Producto[]
+      avatarUrl?: string
+    }[] = []
     const modelosVistos = new Set<string>()
 
     visibles.forEach((p) => {
@@ -34,9 +37,14 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
         const variantesParaEsteModelo = visibles.filter(
           (prod) => (prod.modelo?.trim() || '-') === modelo,
         )
+        // Buscamos la primera variante que tenga una URL en "AVATAR"
+        const avatarUrl = variantesParaEsteModelo.find(
+          (v) => v.avatar && v.avatar.trim() !== '',
+        )?.avatar
         agrupados.push({
           modelo,
           variantes: variantesParaEsteModelo,
+          avatarUrl,
         })
       }
     })
@@ -55,11 +63,12 @@ export default function ProductosGenericos({ productos, alerta }: Props) {
 
       {/* Render de productos a través del nuevo componente */}
       <div className="space-y-4">
-        {agrupadosPorModelo.map(({ modelo, variantes }, i) => (
+        {agrupadosPorModelo.map(({ modelo, variantes, avatarUrl }, i) => (
           <ProductModelCard
             key={modelo}
             modelo={modelo}
             variantes={variantes}
+            avatar={avatarUrl}
             animationDelay={`${i * 150}ms`}
           />
         ))}

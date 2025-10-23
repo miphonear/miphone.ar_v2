@@ -62,6 +62,7 @@ export function useCSV(url: string) {
                 color: row['Color']?.trim() || '',
                 bateria: row['Bateria']?.trim() || '',
                 fotos: row['Fotos']?.trim() || '',
+                avatar: row['Avatar']?.trim() || '',
               }
             })
             .filter((p): p is Producto => p !== null) // Type guarding para eliminar nulls

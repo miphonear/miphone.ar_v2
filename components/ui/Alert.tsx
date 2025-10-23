@@ -9,29 +9,29 @@ interface AlertProps {
 
 const ALERT_CONFIG = {
   info: {
-    style: 'border-purple-300 bg-purple-50 text-purple-900',
+    style: 'border-purple-400 bg-purple-100 text-purple-900',
     icon: '📣',
     label: 'Información',
   },
   error: {
-    style: 'border-red-400 bg-red-50 text-red-800',
+    style: 'border-red-400 bg-red-100 text-red-800',
     icon: '❌',
     label: 'Error',
   },
   success: {
-    style: 'border-green-400 bg-green-50 text-green-800',
+    style: 'border-green-400 bg-green-100 text-green-800',
     icon: '✅',
     label: 'Éxito',
   },
   warning: {
-    style: 'border-yellow-400 bg-yellow-50 text-yellow-800',
+    style: 'border-yellow-400 bg-yellow-100 text-yellow-800',
     icon: '⚠️',
     label: 'Advertencia',
   },
 } as const
 
 const BASE_CLASS =
-  'mb-4 rounded-lg border-l-4 px-3 py-1.5 text-[11px] font-medium flex items-center gap-2 shadow-sm sm:text-sm'
+  'mb-4 rounded-lg border-l-4 px-3 py-1.5 text-[11px] font-semibold flex items-center gap-2 shadow-sm sm:text-sm'
 
 // Animación CSS
 const WORD_FADE = `

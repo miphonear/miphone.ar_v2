@@ -11,6 +11,7 @@ const nextConfig = {
     domains: [
       'lh3.googleusercontent.com', // Google
       'm.media-amazon.com', // Amazon
+      'fdn2.gsmarena.com', // GSMarena
     ],
   },
 }

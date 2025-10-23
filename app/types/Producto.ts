@@ -11,6 +11,7 @@ export interface Producto {
   precio?: string // Precio (opcional)
   ocultar?: string // Flag para ocultar (ej: 'x' para ocultar)
   label?: string // Etiqueta (opcional, ej: 'NEW', 'SALE')
+  avatar?: string // Avatar
 
   // Campos para genéricos
   version?: string // Versión o variante (opcional, ej: '128GB')
